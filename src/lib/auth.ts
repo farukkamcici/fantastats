@@ -164,8 +164,9 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/login",
-    error: "/login",
+    // Let NextAuth handle OAuth redirects naturally
+    // After successful auth, user goes to callbackUrl specified in signIn()
+    error: "/auth/error",
   },
   session: {
     strategy: "jwt",

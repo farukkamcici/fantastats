@@ -10,8 +10,6 @@ import {
 } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 /**
  * Landing Page - "Your Fantasy Basketball Wingman"
@@ -27,13 +25,9 @@ import { useEffect } from "react";
  */
 export default function Home() {
   const { data: session, status } = useSession();
-  const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      router.push("/leagues");
-    }
-  }, [session, router]);
+  // Don't auto-redirect logged-in users — let them see the landing page
+  // They can click "Dashboard" or "Go to Leagues" to navigate
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)] flex flex-col">
@@ -96,18 +90,27 @@ export default function Home() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <button
-                onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
-                className="btn btn-primary inline-flex items-center justify-center gap-3 px-10 py-6 h-12 text-lg font-semibold"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/icon/yahoo.png"
-                  alt="Yahoo"
-                  className="h-[18px] w-[18px]"
-                />
-                Connect with Yahoo
-              </button>
+              {session ? (
+                <Link
+                  href="/leagues"
+                  className="btn btn-primary inline-flex items-center justify-center gap-3 px-10 py-6 h-12 text-lg font-semibold"
+                >
+                  Go to My Leagues →
+                </Link>
+              ) : (
+                <button
+                  onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
+                  className="btn btn-primary inline-flex items-center justify-center gap-3 px-10 py-6 h-12 text-lg font-semibold"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icon/yahoo.png"
+                    alt="Yahoo"
+                    className="h-[18px] w-[18px]"
+                  />
+                  Connect with Yahoo
+                </button>
+              )}
               <Link
                 href="#features"
                 className="btn btn-outline inline-flex items-center justify-center px-10 py-6 h-12 text-lg font-semibold"
@@ -117,10 +120,12 @@ export default function Home() {
             </div>
 
             {/* Trust microcopy */}
-            <p className="text-sm text-[var(--text-tertiary)] flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[var(--success)]" strokeWidth={2} />
-              Read-only access · Your data stays safe
-            </p>
+            {!session && (
+              <p className="text-sm text-[var(--text-tertiary)] flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[var(--success)]" strokeWidth={2} />
+                Read-only access · Your data stays safe
+              </p>
+            )}
           </div>
         </section>
 
@@ -218,21 +223,37 @@ export default function Home() {
         {/* ========== BOTTOM CTA SECTION ========== */}
         <section className="px-6 py-14 bg-[var(--bg-base)]">
           <div className="container mx-auto max-w-4xl text-center">
-            <p className="text-base text-[var(--text-secondary)] mb-5">
-              Ready to make smarter fantasy moves?
-            </p>
-            <button
-              onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
-              className="btn btn-primary inline-flex items-center justify-center gap-2.5 h-12 px-6 py-3 text-[15px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/icon/yahoo.png"
-                alt="Yahoo"
-                className="h-[18px] w-[18px]"
-              />
-              Get Started with Yahoo
-            </button>
+            {session ? (
+              <>
+                <p className="text-base text-[var(--text-secondary)] mb-5">
+                  You&apos;re all set!
+                </p>
+                <Link
+                  href="/leagues"
+                  className="btn btn-primary inline-flex items-center justify-center gap-2.5 h-12 px-6 py-3 text-[15px]"
+                >
+                  View My Leagues →
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="text-base text-[var(--text-secondary)] mb-5">
+                  Ready to make smarter fantasy moves?
+                </p>
+                <button
+                  onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
+                  className="btn btn-primary inline-flex items-center justify-center gap-2.5 h-12 px-6 py-3 text-[15px]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icon/yahoo.png"
+                    alt="Yahoo"
+                    className="h-[18px] w-[18px]"
+                  />
+                  Get Started with Yahoo
+                </button>
+              </>
+            )}
           </div>
         </section>
       </main>

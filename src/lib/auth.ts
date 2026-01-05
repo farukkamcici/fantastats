@@ -162,6 +162,10 @@ export const authOptions: NextAuthOptions = {
       session.error = token.error;
       return session;
     },
+    // Allow sign in - always permit Yahoo sign-ins
+    async signIn() {
+      return true;
+    },
   },
   pages: {
     // Let NextAuth handle OAuth redirects naturally

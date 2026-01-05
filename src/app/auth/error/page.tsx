@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -14,23 +14,60 @@ function AuthErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
-  const getErrorMessage = () => {
+  const getErrorInfo = () => {
     switch (error) {
       case "OAuthSignin":
-        return "There was a problem starting the sign-in process.";
+        return {
+          message: "There was a problem starting the sign-in process.",
+          showClearSession: false,
+        };
       case "OAuthCallback":
-        return "There was a problem completing the sign-in. The authorization may have been denied.";
+        return {
+          message: "There was a problem completing the sign-in. The authorization may have been denied.",
+          showClearSession: true,
+        };
       case "OAuthCreateAccount":
-        return "Could not create an account with your Yahoo credentials.";
+        return {
+          message: "Could not create an account with your Yahoo credentials.",
+          showClearSession: false,
+        };
       case "Callback":
-        return "There was an error during the authentication callback.";
+        return {
+          message: "There was an error during the authentication callback.",
+          showClearSession: true,
+        };
       case "AccessDenied":
-        return "Access was denied. You may have declined the authorization.";
+        return {
+          message: "Access was denied. You may have declined the authorization.",
+          showClearSession: false,
+        };
       case "RefreshAccessTokenError":
-        return "Your session has expired. Please sign in again.";
+        return {
+          message: "Your session has expired. Please sign in again.",
+          showClearSession: true,
+        };
+      case "OAuthAccountNotLinked":
+        return {
+          message: "A previous session exists. Click 'Clear Session & Try Again' to re-authenticate.",
+          showClearSession: true,
+        };
       default:
-        return "An unexpected authentication error occurred.";
+        return {
+          message: "An unexpected authentication error occurred.",
+          showClearSession: true,
+        };
     }
+  };
+
+  const errorInfo = getErrorInfo();
+
+  const handleClearAndRetry = async () => {
+    // Sign out to clear any stale session, then redirect to trigger fresh OAuth
+    await signOut({ redirect: false });
+    // Small delay to ensure session is cleared
+    setTimeout(() => {
+      signIn("yahoo", { callbackUrl: "/leagues" });
+    }, 100);
   };
 
   return (
@@ -52,7 +89,7 @@ function AuthErrorContent() {
               Authentication Error
             </h1>
             <p className="text-[var(--text-secondary)] text-sm">
-              {getErrorMessage()}
+              {errorInfo.message}
             </p>
           </div>
 
@@ -67,17 +104,33 @@ function AuthErrorContent() {
             )}
 
             <div className="space-y-3">
-              <button
-                onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--interactive)] hover:bg-[var(--interactive-hover)] text-white font-medium rounded-lg transition-colors duration-200"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/icon/yahoo.png"
-                  alt="Yahoo"
-                  className="h-5 w-5"
-                />
-                Try Again
+              {errorInfo.showClearSession ? (
+                <button
+                  onClick={handleClearAndRetry}
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--interactive)] hover:bg-[var(--interactive-hover)] text-white font-medium rounded-lg transition-colors duration-200"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icon/yahoo.png"
+                    alt="Yahoo"
+                    className="h-5 w-5"
+                  />
+                  Clear Session & Try Again
+                </button>
+              ) : (
+                <button
+                  onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--interactive)] hover:bg-[var(--interactive-hover)] text-white font-medium rounded-lg transition-colors duration-200"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icon/yahoo.png"
+                    alt="Yahoo"
+                    className="h-5 w-5"
+                  />
+                  Try Again
+                </button>
+              )}
               </button>
 
               <Link

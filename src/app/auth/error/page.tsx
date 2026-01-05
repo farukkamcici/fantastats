@@ -131,7 +131,6 @@ function AuthErrorContent() {
                   Try Again
                 </button>
               )}
-              </button>
 
               <Link
                 href="/"

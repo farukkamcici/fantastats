@@ -1,0 +1,232 @@
+/**
+ * Fantastats Design System - Theme Configuration
+ * 
+ * Sophisticated Light & Dark theme implementation.
+ * Dark mode: deep, calm, professional (not bright/neon)
+ * Light mode: soft off-white, clean contrast
+ */
+
+/* ==========================================================================
+   LIGHT THEME (Default)
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  /* Background - Soft daylight, premium feel (not stark white) */
+  --bg-base: var(--bg-base-light);       /* #F3F5F8 - soft cool gray */
+  --bg-surface: var(--bg-surface-light); /* #F8FAFB - cleaner surface */
+  --bg-elevated: var(--bg-elevated-light); /* #FFFFFF - cards stand out */
+  --bg-subtle: var(--bg-subtle-light);   /* #EBEEF2 - subtle sections */
+  
+  /* Text - Strong contrast on soft backgrounds */
+  --text-primary: var(--text-primary-light);   /* #1A1D26 */
+  --text-secondary: var(--text-secondary-light); /* #3D4554 */
+  --text-tertiary: var(--text-tertiary-light);  /* #6B7280 */
+  --text-muted: var(--text-muted-light);        /* #9CA3AF */
+  
+  /* Brand - Cold blue for interactive, purple for accent */
+  --accent: var(--brand-accent);
+  --accent-hover: var(--brand-accent-hover);
+  --accent-muted: var(--brand-accent-muted);
+  --interactive: var(--brand-primary);
+  --interactive-hover: var(--brand-primary-hover);
+  --interactive-active: var(--brand-primary-active);
+  --interactive-muted: var(--brand-primary-muted);
+  
+  /* Legacy mappings for compatibility */
+  --accent-primary: var(--brand-primary);
+  --accent-primary-hover: var(--brand-primary-hover);
+  --accent-secondary: var(--brand-secondary);
+  --accent-secondary-hover: var(--brand-secondary-hover);
+  
+  /* Border - Stronger for visibility on soft backgrounds */
+  --border-default: #D5D9E0;
+  --border-strong: #C1C7D0;
+  --border-subtle: #E4E7EC;
+  
+  /* Component specific */
+  --input-bg: #FFFFFF;
+  --input-border: #C1C7D0;
+  --input-border-hover: #A8B0BC;
+  --input-border-focus: var(--brand-primary);
+  --input-placeholder: #8D95A3;
+  
+  --card-bg: #FFFFFF;
+  --card-border: #D5D9E0;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.06);
+  
+  --button-text-on-primary: #FFFFFF;
+  --button-text-on-secondary: #FFFFFF;
+  
+  /* Overlay */
+  --overlay-bg: rgba(26, 29, 38, 0.4);
+  
+  /* Focus ring - visible but not harsh */
+  --focus-ring: rgba(74, 133, 230, 0.35);
+  
+  /* Scrollbar */
+  --scrollbar-track: #EBEEF2;
+  --scrollbar-thumb: #C1C7D0;
+  --scrollbar-thumb-hover: #A8B0BC;
+}
+
+/* ==========================================================================
+   DARK THEME - Deep, calm, sophisticated
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Background - Deep, calm colors (not bright purple) */
+  --bg-base: var(--bg-base-dark);          /* #0E0F17 */
+  --bg-surface: var(--bg-surface-dark);    /* #1A1D27 */
+  --bg-elevated: var(--bg-elevated-dark);  /* #242833 */
+  --bg-subtle: var(--bg-subtle-dark);      /* #14151D */
+  
+  /* Text - Comfortable for eyes, not harsh white */
+  --text-primary: var(--text-primary-dark);    /* #F0F2F5 */
+  --text-secondary: var(--text-secondary-dark); /* #A0A7B4 */
+  --text-tertiary: var(--text-tertiary-dark);   /* #6B7280 */
+  --text-muted: var(--text-muted-dark);         /* #4B5563 */
+  
+  /* Brand - Same colors work well on dark */
+  --accent: var(--brand-accent);
+  --accent-hover: var(--brand-accent-hover);
+  --accent-muted: var(--brand-accent-muted);
+  --interactive: var(--brand-primary);
+  --interactive-hover: var(--brand-primary-hover);
+  --interactive-active: var(--brand-primary-active);
+  --interactive-muted: var(--brand-primary-muted);
+  
+  /* Legacy mappings */
+  --accent-primary: var(--brand-primary);
+  --accent-primary-hover: var(--brand-primary-hover);
+  --accent-secondary: var(--brand-secondary);
+  --accent-secondary-hover: var(--brand-secondary-hover);
+  
+  /* Border - Subtle, not harsh */
+  --border-default: var(--border-dark);        /* #2D3442 */
+  --border-strong: var(--border-medium-dark);  /* #3D4452 */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  
+  /* Component specific */
+  --input-bg: var(--bg-elevated-dark);
+  --input-border: var(--border-dark);
+  --input-border-hover: var(--border-medium-dark);
+  --input-border-focus: var(--brand-primary);
+  --input-placeholder: var(--neutral-600);
+  
+  --card-bg: var(--bg-surface-dark);
+  --card-border: var(--border-dark);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+  
+  --button-text-on-primary: #FFFFFF;
+  --button-text-on-secondary: #FFFFFF;
+  
+  /* Overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.75);
+  
+  /* Focus ring */
+  --focus-ring: rgba(74, 133, 230, 0.5);
+  
+  /* Scrollbar */
+  --scrollbar-track: var(--bg-subtle-dark);
+  --scrollbar-thumb: var(--neutral-800);
+  --scrollbar-thumb-hover: var(--neutral-700);
+}
+
+/* ==========================================================================
+   SYSTEM PREFERENCE SUPPORT
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Background */
+    --bg-base: var(--bg-base-dark);
+    --bg-surface: var(--bg-surface-dark);
+    --bg-elevated: var(--bg-elevated-dark);
+    --bg-subtle: var(--bg-subtle-dark);
+    
+    /* Text */
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --text-tertiary: var(--text-tertiary-dark);
+    --text-muted: var(--text-muted-dark);
+    
+    /* Brand */
+    --accent: var(--brand-accent);
+    --accent-hover: var(--brand-accent-hover);
+    --accent-muted: var(--brand-accent-muted);
+    --interactive: var(--brand-primary);
+    --interactive-hover: var(--brand-primary-hover);
+    --interactive-active: var(--brand-primary-active);
+    --interactive-muted: var(--brand-primary-muted);
+    
+    /* Legacy */
+    --accent-primary: var(--brand-primary);
+    --accent-primary-hover: var(--brand-primary-hover);
+    --accent-secondary: var(--brand-secondary);
+    --accent-secondary-hover: var(--brand-secondary-hover);
+    
+    /* Border */
+    --border-default: var(--border-dark);
+    --border-strong: var(--border-medium-dark);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    
+    /* Components */
+    --input-bg: var(--bg-elevated-dark);
+    --input-border: var(--border-dark);
+    --input-border-hover: var(--border-medium-dark);
+    --input-border-focus: var(--brand-primary);
+    --input-placeholder: var(--neutral-600);
+    
+    --card-bg: var(--bg-surface-dark);
+    --card-border: var(--border-dark);
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    --button-text-on-primary: #FFFFFF;
+    --button-text-on-secondary: #FFFFFF;
+    
+    --overlay-bg: rgba(0, 0, 0, 0.75);
+    --focus-ring: rgba(74, 133, 230, 0.5);
+    
+    --scrollbar-track: var(--bg-subtle-dark);
+    --scrollbar-thumb: var(--neutral-800);
+    --scrollbar-thumb-hover: var(--neutral-700);
+  }
+}
+
+/* ==========================================================================
+   LOGO THEME SWITCHING
+   ========================================================================== */
+
+/* Light theme: show light logo, hide dark logo */
+:root .logo-dark,
+[data-theme="light"] .logo-dark {
+  display: none;
+}
+
+:root .logo-light,
+[data-theme="light"] .logo-light {
+  display: block;
+}
+
+/* Dark theme: show dark logo, hide light logo */
+[data-theme="dark"] .logo-dark {
+  display: block;
+}
+
+[data-theme="dark"] .logo-light {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-dark {
+    display: block;
+  }
+  
+  :root:not([data-theme="light"]) .logo-light {
+    display: none;
+  }
+}

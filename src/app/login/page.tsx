@@ -1,13 +1,14 @@
 "use client";
 
-import { LoginButton } from "@/components/auth/LoginButton";
-import { useSession } from "next-auth/react";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 /**
- * Login page
- * Redirects to /leagues if already authenticated
+ * Login page - Modern, calm, sophisticated design
+ * Deep dark mode + clean light mode
  */
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -22,78 +23,131 @@ export default function LoginPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-base)]">
+        <div className="spinner w-8 h-8" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
-      <div className="max-w-md w-full mx-4">
-        {/* Logo/Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-lg mb-4">
-            <span className="text-4xl">🏀</span>
-          </div>
-          <h1 className="text-4xl font-bold text-white mb-2">Fantastats</h1>
-          <p className="text-purple-200">
-            Your Yahoo Fantasy Basketball companion
-          </p>
-        </div>
+    <div className="min-h-screen bg-[var(--bg-base)] flex flex-col">
+      {/* Theme Toggle - Top Right */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
 
-        {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
-            Welcome Back
-          </h2>
-          <p className="text-gray-500 text-center mb-8">
-            Sign in with your Yahoo account to access your fantasy basketball data
-          </p>
-
-          <LoginButton className="w-full" />
-
-          {/* Features */}
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <p className="text-xs text-gray-500 text-center mb-4">
-              What you&apos;ll get access to:
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-[420px]">
+          {/* Logo & Branding */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-sm mb-5">
+              <span className="text-3xl">🏀</span>
+            </div>
+            <h1 className="text-2xl font-semibold text-[var(--text-primary)] mb-2">
+              Fantastats
+            </h1>
+            <p className="text-[var(--text-secondary)] text-sm">
+              Your Yahoo Fantasy Basketball companion
             </p>
+          </div>
+
+          {/* Login Card */}
+          <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-6 shadow-[var(--card-shadow)]">
+            <div className="text-center mb-6">
+              <h2 className="text-lg font-medium text-[var(--text-primary)] mb-1">
+                Welcome back
+              </h2>
+              <p className="text-sm text-[var(--text-tertiary)]">
+                Sign in to access your fantasy data
+              </p>
+            </div>
+
+            {/* Yahoo Sign In Button */}
+            <button
+              onClick={() => signIn("yahoo", { callbackUrl: "/leagues" })}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--interactive)] hover:bg-[var(--interactive-hover)] text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface)]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/icon/yahoo.png"
+                alt="Yahoo"
+                className="h-5 w-5"
+              />
+              Sign in with Yahoo
+            </button>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[var(--border-default)]"></div>
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="px-2 bg-[var(--card-bg)] text-[var(--text-tertiary)]">
+                  What you&apos;ll get
+                </span>
+              </div>
+            </div>
+
+            {/* Features List */}
             <ul className="space-y-3">
-              <li className="flex items-center text-sm text-gray-600">
-                <svg className="w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                View your weekly and season stats
-              </li>
-              <li className="flex items-center text-sm text-gray-600">
-                <svg className="w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Track matchup progress in real-time
-              </li>
-              <li className="flex items-center text-sm text-gray-600">
-                <svg className="w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                See NBA schedule for streaming
-              </li>
-              <li className="flex items-center text-sm text-gray-600">
-                <svg className="w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Export your data to CSV
-              </li>
+              <FeatureItem text="View your weekly and season stats" />
+              <FeatureItem text="Track matchup progress in real-time" />
+              <FeatureItem text="See NBA schedule for streaming" />
+              <FeatureItem text="Export your data to CSV" />
             </ul>
           </div>
-        </div>
 
-        {/* Footer */}
-        <p className="text-center text-purple-300 text-sm mt-6">
-          By signing in, you agree to allow Fantastats to access your Yahoo Fantasy data.
-          <br />
-          We only read your data — we never make changes.
-        </p>
-      </div>
+          {/* Learn More Link */}
+          <div className="mt-6 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--interactive)] transition-colors"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              Back to home
+            </Link>
+          </div>
+
+          {/* Footer Note */}
+          <p className="mt-8 text-center text-xs text-[var(--text-muted)] leading-relaxed">
+            By signing in, you agree to allow Fantastats to read your Yahoo Fantasy data.
+            <br />
+            We never make changes to your account.
+          </p>
+        </div>
+      </main>
     </div>
+  );
+}
+
+function FeatureItem({ text }: { text: string }) {
+  return (
+    <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--success-muted)] flex items-center justify-center">
+        <svg
+          className="w-3 h-3 text-[var(--success)]"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+      {text}
+    </li>
   );
 }

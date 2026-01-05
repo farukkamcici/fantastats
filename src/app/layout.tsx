@@ -16,6 +16,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Fantastats - Yahoo Fantasy Basketball",
   description: "Your Yahoo Fantasy Basketball companion - stats, matchups, and streaming insights",
+  icons: {
+    icon: [
+      { url: "/brand/logo-icon.png", sizes: "32x32", type: "image/png" },
+      { url: "/brand/app-icon.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/brand/app-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({

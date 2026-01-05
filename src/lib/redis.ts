@@ -1,7 +1,7 @@
 import { Redis } from '@upstash/redis';
 
-// Initialize Redis from environment variables
-// Uses: KV_REST_API_URL and KV_REST_API_TOKEN
+// Initialize Redis from environment variables.
+// Upstash expects: UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN
 export const redis = Redis.fromEnv();
 
 // Cache helper functions with TTL (Time To Live)

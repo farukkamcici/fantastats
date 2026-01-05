@@ -401,6 +401,13 @@ npm install date-fns          # Date formatting
 # Yahoo OAuth
 YAHOO_CLIENT_ID=✅
 YAHOO_CLIENT_SECRET=✅
+
+# Yahoo redirect URIs must be HTTPS in many Yahoo apps.
+# NextAuth's callback path is always:
+#   /api/auth/callback/yahoo
+# If Yahoo does not allow http://localhost redirects, test OAuth via:
+# - your Vercel deployment (recommended), OR
+# - an HTTPS tunnel with a stable URL.
 YAHOO_REDIRECT_URI=✅
 
 # NextAuth

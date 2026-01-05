@@ -6,16 +6,19 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = await getToken({ req });
 
+  const isPublicPage =
+    pathname === "/" || pathname === "/login" || pathname === "/auth/error";
+
   // If already authenticated, skip landing/login and go straight to the app.
-  if (token && (pathname === "/" || pathname === "/login")) {
+  if (token && isPublicPage) {
     const url = req.nextUrl.clone();
     url.pathname = "/leagues";
     url.search = "";
     return NextResponse.redirect(url);
   }
 
-  // If not authenticated, protect app routes.
-  if (!token && (pathname.startsWith("/leagues") || pathname.startsWith("/dashboard"))) {
+  // If not authenticated, only allow the landing + auth pages.
+  if (!token && !isPublicPage) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.search = "";
@@ -26,5 +29,9 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/leagues/:path*", "/dashboard/:path*"],
+  // Apply to all pages except:
+  // - /api (handled by route auth checks, avoids breaking JSON fetches)
+  // - Next.js internals / static assets
+  // - Any path with a file extension (e.g. images in /public)
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)"],
 };

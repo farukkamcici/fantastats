@@ -2,7 +2,7 @@
 
 import { UserMenu } from "@/components/auth/UserMenu";
 import { SimplifiedLeague } from "@/lib/yahoo/types";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 /**
  * Leagues page - shows user's NBA fantasy leagues
  * Redirects to login if not authenticated
+ * Handles session errors gracefully
  */
 export default function LeaguesPage() {
   const { data: session, status } = useSession();
@@ -19,16 +20,20 @@ export default function LeaguesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect if not logged in
+  // Handle auth states
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      router.push("/");
     }
-  }, [status, router]);
+    // If session has an error (e.g., refresh failed), redirect to error page
+    if (session?.error === "RefreshAccessTokenError") {
+      router.push("/auth/error?error=RefreshAccessTokenError");
+    }
+  }, [status, session, router]);
 
-  // Fetch leagues
+  // Fetch leagues when we have a valid session
   useEffect(() => {
-    if (session?.accessToken) {
+    if (session?.accessToken && !session.error) {
       fetchLeagues();
     }
   }, [session]);
@@ -42,6 +47,13 @@ export default function LeaguesPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // Handle token expiration
+        if (response.status === 401) {
+          // Token expired - sign out and redirect
+          await signOut({ redirect: false });
+          router.push("/auth/error?error=RefreshAccessTokenError");
+          return;
+        }
         throw new Error(data.message || "Failed to fetch leagues");
       }
 

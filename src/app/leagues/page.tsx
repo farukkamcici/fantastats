@@ -107,7 +107,7 @@ export default function LeaguesPage() {
 function LeagueCard({ league }: { league: SimplifiedLeague }) {
   return (
     <Link
-      href={`/dashboard?league=${league.key}`}
+      href={`/leagues/${encodeURIComponent(league.key)}`}
       className="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-purple-300 transition-all"
     >
       <div className="flex items-start gap-4">
@@ -156,7 +156,7 @@ function LeagueCard({ league }: { league: SimplifiedLeague }) {
       </div>
 
       <div className="mt-4 flex items-center text-purple-600 text-sm font-medium">
-        View Dashboard
+        Open League
         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>

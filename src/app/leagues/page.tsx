@@ -1,7 +1,15 @@
 "use client";
 
-import { UserMenu } from "@/components/auth/UserMenu";
+import { AppHeader } from "@/components/layout/Header";
 import { SimplifiedLeague } from "@/lib/yahoo/types";
+import {
+    AlertTriangle,
+    ArrowRight,
+    Calendar,
+    ExternalLink,
+    Trophy,
+    Users,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,8 +18,7 @@ import { useEffect, useState } from "react";
 
 /**
  * Leagues page - shows user's NBA fantasy leagues
- * Redirects to login if not authenticated
- * Handles session errors gracefully
+ * Modern, chic design using the design system
  */
 export default function LeaguesPage() {
   const { data: session, status } = useSession();
@@ -25,7 +32,6 @@ export default function LeaguesPage() {
     if (status === "unauthenticated") {
       router.push("/");
     }
-    // If session has an error (e.g., refresh failed), redirect to error page
     if (session?.error === "RefreshAccessTokenError") {
       router.push("/auth/error?error=RefreshAccessTokenError");
     }
@@ -47,9 +53,7 @@ export default function LeaguesPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        // Handle token expiration
         if (response.status === 401) {
-          // Token expired - sign out and redirect
           await signOut({ redirect: false });
           router.push("/auth/error?error=RefreshAccessTokenError");
           return;
@@ -71,31 +75,24 @@ export default function LeaguesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl">🏀</span>
-              <span className="text-xl font-bold text-gray-900">Fantastats</span>
-            </Link>
-            <UserMenu />
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <AppHeader />
 
       {/* Main Content */}
-      <main className="container mx-auto px-6 py-10">
+      <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">My Leagues</h1>
-          <p className="text-gray-600 mt-2">
-            Select a league to view your dashboard
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+            My Leagues
+          </h1>
+          <p className="text-[var(--text-secondary)] mt-2">
+            Select a league to view your dashboard and manage your team
           </p>
         </div>
 
+        {/* Content */}
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[1, 2, 3].map((i) => (
               <LeagueCardSkeleton key={i} />
             ))}
@@ -105,7 +102,7 @@ export default function LeaguesPage() {
         ) : leagues.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {leagues.map((league) => (
               <LeagueCard key={league.key} league={league} />
             ))}
@@ -120,58 +117,71 @@ function LeagueCard({ league }: { league: SimplifiedLeague }) {
   return (
     <Link
       href={`/leagues/${encodeURIComponent(league.key)}`}
-      className="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-purple-300 transition-all"
+      className="group block bg-[var(--bg-surface)] rounded-xl border border-[var(--border-default)] p-5 hover:border-[var(--interactive)] hover:shadow-lg transition-all duration-200"
     >
+      {/* Header */}
       <div className="flex items-start gap-4">
         {league.logoUrl ? (
           <Image
             src={league.logoUrl}
             alt={league.name}
-            width={56}
-            height={56}
-            className="rounded-lg object-cover"
+            width={48}
+            height={48}
+            className="rounded-lg object-cover flex-shrink-0"
             unoptimized
           />
         ) : (
-          <div className="w-14 h-14 rounded-lg bg-purple-100 flex items-center justify-center">
-            <span className="text-2xl">🏀</span>
+          <div className="w-12 h-12 rounded-lg bg-[var(--interactive-muted)] flex items-center justify-center flex-shrink-0">
+            <Trophy className="w-6 h-6 text-[var(--interactive)]" />
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 truncate">{league.name}</h3>
-          <p className="text-sm text-gray-500">{league.season} Season</p>
+          <h3 className="font-semibold text-[var(--text-primary)] truncate group-hover:text-[var(--interactive)] transition-colors">
+            {league.name}
+          </h3>
+          <p className="text-sm text-[var(--text-tertiary)] mt-0.5">
+            {league.season} Season
+          </p>
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center justify-between text-sm">
-          <div>
-            <span className="text-gray-500">Teams:</span>{" "}
-            <span className="font-medium text-gray-900">{league.numTeams}</span>
+      {/* Stats */}
+      <div className="mt-4 pt-4 border-t border-[var(--border-subtle)] grid grid-cols-3 gap-3">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-1.5 text-[var(--text-tertiary)]">
+            <Users className="w-3.5 h-3.5" />
+            <span className="text-xs">Teams</span>
           </div>
-          <div>
-            <span className="text-gray-500">Week:</span>{" "}
-            <span className="font-medium text-gray-900">{league.currentWeek}</span>
+          <p className="text-sm font-semibold text-[var(--text-primary)] mt-1">
+            {league.numTeams}
+          </p>
+        </div>
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-1.5 text-[var(--text-tertiary)]">
+            <Calendar className="w-3.5 h-3.5" />
+            <span className="text-xs">Week</span>
           </div>
-          <div>
-            <span
-              className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                league.isActive
-                  ? "bg-green-100 text-green-800"
-                  : "bg-gray-100 text-gray-800"
-              }`}
-            >
-              {league.isActive ? "Active" : "Ended"}
-            </span>
-          </div>
+          <p className="text-sm font-semibold text-[var(--text-primary)] mt-1">
+            {league.currentWeek}
+          </p>
+        </div>
+        <div className="text-center">
+          <span
+            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+              league.isActive
+                ? "bg-[var(--success-muted)] text-[var(--success)]"
+                : "bg-[var(--bg-subtle)] text-[var(--text-tertiary)]"
+            }`}
+          >
+            {league.isActive ? "Active" : "Ended"}
+          </span>
         </div>
       </div>
 
-      <div className="mt-4 flex items-center text-purple-600 text-sm font-medium">
-        Open League
-        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+      {/* Footer */}
+      <div className="mt-4 flex items-center justify-end text-sm font-medium text-[var(--interactive)] opacity-0 group-hover:opacity-100 transition-opacity">
+        <span>Open League</span>
+        <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
       </div>
     </Link>
   );
@@ -179,16 +189,16 @@ function LeagueCard({ league }: { league: SimplifiedLeague }) {
 
 function LeagueCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+    <div className="bg-[var(--bg-surface)] rounded-xl border border-[var(--border-default)] p-5">
       <div className="flex items-start gap-4">
-        <div className="w-14 h-14 rounded-lg bg-gray-200" />
+        <div className="w-12 h-12 rounded-lg bg-[var(--bg-subtle)] animate-pulse" />
         <div className="flex-1">
-          <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
-          <div className="h-4 bg-gray-200 rounded w-1/2" />
+          <div className="h-5 bg-[var(--bg-subtle)] rounded w-3/4 mb-2 animate-pulse" />
+          <div className="h-4 bg-[var(--bg-subtle)] rounded w-1/2 animate-pulse" />
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <div className="h-4 bg-gray-200 rounded w-full" />
+      <div className="mt-4 pt-4 border-t border-[var(--border-subtle)]">
+        <div className="h-8 bg-[var(--bg-subtle)] rounded w-full animate-pulse" />
       </div>
     </div>
   );
@@ -196,34 +206,34 @@ function LeagueCardSkeleton() {
 
 function LoadingState() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen bg-[var(--bg-base)] flex items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600 mx-auto mb-4" />
-        <p className="text-gray-600">Loading...</p>
+        <div className="w-12 h-12 rounded-full border-2 border-[var(--interactive)] border-t-transparent animate-spin mx-auto mb-4" />
+        <p className="text-[var(--text-secondary)]">Loading your leagues...</p>
       </div>
     </div>
   );
 }
 
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorState({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry: () => void;
+}) {
   return (
-    <div className="text-center py-12">
-      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
-        <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-          />
-        </svg>
+    <div className="text-center py-16">
+      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--error-muted)] mb-4">
+        <AlertTriangle className="w-8 h-8 text-[var(--error)]" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Leagues</h3>
-      <p className="text-gray-600 mb-4">{message}</p>
-      <button
-        onClick={onRetry}
-        className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-      >
+      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+        Error Loading Leagues
+      </h3>
+      <p className="text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
+        {message}
+      </p>
+      <button onClick={onRetry} className="btn btn-primary">
         Try Again
       </button>
     </div>
@@ -232,29 +242,24 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 
 function EmptyState() {
   return (
-    <div className="text-center py-12">
-      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-        <span className="text-3xl">🏀</span>
+    <div className="text-center py-16">
+      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--bg-subtle)] mb-4">
+        <Trophy className="w-8 h-8 text-[var(--text-tertiary)]" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">No Leagues Found</h3>
-      <p className="text-gray-600 mb-4">
+      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
+        No Leagues Found
+      </h3>
+      <p className="text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
         You don&apos;t have any NBA fantasy leagues on Yahoo this season.
       </p>
       <a
         href="https://basketball.fantasysports.yahoo.com/"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+        className="btn btn-primary inline-flex items-center gap-2"
       >
         Join a League on Yahoo
-        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-          />
-        </svg>
+        <ExternalLink className="w-4 h-4" />
       </a>
     </div>
   );

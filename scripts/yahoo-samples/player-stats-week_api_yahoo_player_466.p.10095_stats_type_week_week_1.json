@@ -1,0 +1,97 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/player/466.p.10095/stats;type=week;week=1",
+    "player": [
+      [
+        {
+          "player_key": "466.p.10095"
+        },
+        {
+          "player_id": "10095"
+        },
+        {
+          "name": {
+            "full": "Anthony Black",
+            "first": "Anthony",
+            "last": "Black",
+            "ascii_first": "Anthony",
+            "ascii_last": "Black"
+          }
+        },
+        {
+          "url": "https://sports.yahoo.com/nba/players/10095"
+        },
+        {
+          "editorial_player_key": "nba.p.10095"
+        },
+        {
+          "editorial_team_key": "nba.t.19"
+        },
+        {
+          "editorial_team_full_name": "Orlando Magic"
+        },
+        {
+          "editorial_team_abbr": "ORL"
+        },
+        {
+          "editorial_team_url": "https://sports.yahoo.com/nba/teams/orlando/"
+        },
+        {
+          "is_keeper": {
+            "status": false,
+            "cost": false
+          }
+        },
+        {
+          "uniform_number": "0"
+        },
+        {
+          "display_position": "PG,SG,SF"
+        },
+        {
+          "headshot": {
+            "url": "https://s.yimg.com/iu/api/res/1.2/T6F7og_dLKBlhQTPuu9TGA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/10095.png",
+            "size": "small"
+          },
+          "image_url": "https://s.yimg.com/iu/api/res/1.2/T6F7og_dLKBlhQTPuu9TGA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/10095.png"
+        },
+        {
+          "is_undroppable": "0"
+        },
+        {
+          "position_type": "P"
+        },
+        [],
+        {
+          "eligible_positions": [
+            {
+              "position": "PG"
+            },
+            {
+              "position": "SF"
+            },
+            {
+              "position": "SG"
+            }
+          ]
+        },
+        {
+          "eligible_positions_to_add": []
+        },
+        [],
+        [],
+        {
+          "has_player_notes": 1
+        },
+        [],
+        {
+          "player_notes_last_timestamp": 1768179072
+        }
+      ]
+    ],
+    "time": "26.238918304443ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

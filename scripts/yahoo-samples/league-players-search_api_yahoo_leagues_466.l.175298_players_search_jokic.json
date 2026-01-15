@@ -1,0 +1,169 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/league/466.l.175298/players;search=jokic",
+    "league": [
+      {
+        "league_key": "466.l.175298",
+        "league_id": "175298",
+        "name": "Haftalık Fantezi - Sezon 3 🏀",
+        "url": "https://basketball.fantasysports.yahoo.com/nba/175298",
+        "logo_url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/73ddcf660473a08073904db6291701578bcf69d6034aeb593402e3251722dc33.jpg",
+        "password": "",
+        "draft_status": "postdraft",
+        "num_teams": 12,
+        "edit_key": "2026-01-15",
+        "weekly_deadline": "intraday",
+        "roster_type": "date",
+        "league_update_timestamp": "1768467049",
+        "scoring_type": "head",
+        "league_type": "private",
+        "renew": "",
+        "renewed": "",
+        "felo_tier": "silver",
+        "is_highscore": false,
+        "matchup_week": 13,
+        "iris_group_chat_id": "",
+        "short_invitation_url": "https://basketball.fantasysports.yahoo.com/nba/175298/invitation?key=2ddaeddf94e860b8&ikey=02d0b7e34ac92b7e",
+        "allow_add_to_dl_extra_pos": 1,
+        "is_pro_league": "0",
+        "is_cash_league": "0",
+        "current_week": 13,
+        "start_week": "1",
+        "start_date": "2025-10-21",
+        "end_week": "21",
+        "end_date": "2026-03-22",
+        "current_date": "2026-01-15",
+        "is_plus_league": "0",
+        "game_code": "nba",
+        "season": "2025"
+      },
+      {
+        "players": {
+          "0": {
+            "player": [
+              [
+                {
+                  "player_key": "466.p.5352"
+                },
+                {
+                  "player_id": "5352"
+                },
+                {
+                  "name": {
+                    "full": "Nikola Jokić",
+                    "first": "Nikola",
+                    "last": "Jokić",
+                    "ascii_first": "Nikola",
+                    "ascii_last": "Jokić"
+                  }
+                },
+                {
+                  "url": "https://sports.yahoo.com/nba/players/5352"
+                },
+                {
+                  "status": "INJ",
+                  "status_full": "Injured (IL-eligible)"
+                },
+                {
+                  "injury_note": "Knee"
+                },
+                {
+                  "editorial_player_key": "nba.p.5352"
+                },
+                {
+                  "editorial_team_key": "nba.t.7"
+                },
+                {
+                  "editorial_team_full_name": "Denver Nuggets"
+                },
+                {
+                  "editorial_team_abbr": "DEN"
+                },
+                {
+                  "editorial_team_url": "https://sports.yahoo.com/nba/teams/denver/"
+                },
+                {
+                  "is_keeper": {
+                    "status": false,
+                    "cost": false,
+                    "kept": false
+                  }
+                },
+                {
+                  "uniform_number": "15"
+                },
+                {
+                  "display_position": "C"
+                },
+                {
+                  "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/hBtwJZPamfeu4tuuwI6eow--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/5352.png",
+                    "size": "small"
+                  },
+                  "image_url": "https://s.yimg.com/iu/api/res/1.2/hBtwJZPamfeu4tuuwI6eow--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/5352.png"
+                },
+                {
+                  "is_undroppable": "1"
+                },
+                {
+                  "position_type": "P"
+                },
+                {
+                  "primary_position": "C"
+                },
+                {
+                  "eligible_positions": [
+                    {
+                      "position": "C"
+                    },
+                    {
+                      "position": "Util"
+                    },
+                    {
+                      "position": "IL"
+                    },
+                    {
+                      "position": "IL+"
+                    }
+                  ]
+                },
+                {
+                  "eligible_positions_to_add": [
+                    {
+                      "position": "PG"
+                    },
+                    {
+                      "position": "SG"
+                    },
+                    {
+                      "position": "SF"
+                    },
+                    {
+                      "position": "PF"
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "has_player_notes": 1
+                },
+                {
+                  "has_recent_player_notes": 1
+                },
+                {
+                  "player_notes_last_timestamp": 1768425941
+                }
+              ]
+            ]
+          },
+          "count": 1
+        }
+      }
+    ],
+    "time": "36.243200302124ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

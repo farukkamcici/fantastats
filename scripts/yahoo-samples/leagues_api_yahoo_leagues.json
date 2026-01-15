@@ -1,0 +1,121 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/users;use_login=1/games;game_keys=nba/leagues",
+    "users": {
+      "0": {
+        "user": [
+          {
+            "guid": "GBBDRKNNIJ46SDETCZ6DLAEBIA"
+          },
+          {
+            "games": {
+              "0": {
+                "game": [
+                  {
+                    "game_key": "466",
+                    "game_id": "466",
+                    "name": "Basketball",
+                    "code": "nba",
+                    "type": "full",
+                    "url": "https://basketball.fantasysports.yahoo.com/nba",
+                    "season": "2025",
+                    "is_registration_over": 0,
+                    "is_game_over": 0,
+                    "is_offseason": 0
+                  },
+                  {
+                    "leagues": {
+                      "0": {
+                        "league": [
+                          {
+                            "league_key": "466.l.175298",
+                            "league_id": "175298",
+                            "name": "Haftalık Fantezi - Sezon 3 🏀",
+                            "url": "https://basketball.fantasysports.yahoo.com/nba/175298",
+                            "logo_url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/73ddcf660473a08073904db6291701578bcf69d6034aeb593402e3251722dc33.jpg",
+                            "password": "",
+                            "draft_status": "postdraft",
+                            "num_teams": 12,
+                            "edit_key": "2026-01-15",
+                            "weekly_deadline": "intraday",
+                            "roster_type": "date",
+                            "league_update_timestamp": "1768467049",
+                            "scoring_type": "head",
+                            "league_type": "private",
+                            "renew": "",
+                            "renewed": "",
+                            "felo_tier": "silver",
+                            "is_highscore": false,
+                            "matchup_week": 13,
+                            "iris_group_chat_id": "",
+                            "short_invitation_url": "https://basketball.fantasysports.yahoo.com/nba/175298/invitation?key=2ddaeddf94e860b8&ikey=02d0b7e34ac92b7e",
+                            "allow_add_to_dl_extra_pos": 1,
+                            "is_pro_league": "0",
+                            "is_cash_league": "0",
+                            "current_week": 13,
+                            "start_week": "1",
+                            "start_date": "2025-10-21",
+                            "end_week": "21",
+                            "end_date": "2026-03-22",
+                            "current_date": "2026-01-15",
+                            "is_plus_league": "0",
+                            "game_code": "nba",
+                            "season": "2025"
+                          }
+                        ]
+                      },
+                      "1": {
+                        "league": [
+                          {
+                            "league_key": "466.l.175248",
+                            "league_id": "175248",
+                            "name": "SF | Emerging Stars League",
+                            "url": "https://basketball.fantasysports.yahoo.com/nba/175248",
+                            "logo_url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/8f50c18db8a36bdd745a3cdb0319088866db9287f84dfce240f5e1823a9086fb.jpg",
+                            "draft_status": "postdraft",
+                            "num_teams": 12,
+                            "edit_key": "2026-01-15",
+                            "weekly_deadline": "intraday",
+                            "roster_type": "date",
+                            "league_update_timestamp": "1768467038",
+                            "scoring_type": "head",
+                            "league_type": "private",
+                            "renew": "",
+                            "renewed": "",
+                            "felo_tier": "gold",
+                            "is_highscore": false,
+                            "matchup_week": 13,
+                            "iris_group_chat_id": "",
+                            "allow_add_to_dl_extra_pos": 1,
+                            "is_pro_league": "0",
+                            "is_cash_league": "0",
+                            "current_week": 13,
+                            "start_week": "1",
+                            "start_date": "2025-10-21",
+                            "end_week": "22",
+                            "end_date": "2026-03-29",
+                            "current_date": "2026-01-15",
+                            "is_plus_league": "0",
+                            "game_code": "nba",
+                            "season": "2025"
+                          }
+                        ]
+                      },
+                      "count": 2
+                    }
+                  }
+                ]
+              },
+              "count": 1
+            }
+          }
+        ]
+      },
+      "count": 1
+    },
+    "time": "45.990943908691ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

@@ -1,0 +1,449 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/league/466.l.175298/transactions;count=5;start=0",
+    "league": [
+      {
+        "league_key": "466.l.175298",
+        "league_id": "175298",
+        "name": "Haftalık Fantezi - Sezon 3 🏀",
+        "url": "https://basketball.fantasysports.yahoo.com/nba/175298",
+        "logo_url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/73ddcf660473a08073904db6291701578bcf69d6034aeb593402e3251722dc33.jpg",
+        "password": "",
+        "draft_status": "postdraft",
+        "num_teams": 12,
+        "edit_key": "2026-01-15",
+        "weekly_deadline": "intraday",
+        "roster_type": "date",
+        "league_update_timestamp": "1768467049",
+        "scoring_type": "head",
+        "league_type": "private",
+        "renew": "",
+        "renewed": "",
+        "felo_tier": "silver",
+        "is_highscore": false,
+        "matchup_week": 13,
+        "iris_group_chat_id": "",
+        "short_invitation_url": "https://basketball.fantasysports.yahoo.com/nba/175298/invitation?key=2ddaeddf94e860b8&ikey=02d0b7e34ac92b7e",
+        "allow_add_to_dl_extra_pos": 1,
+        "is_pro_league": "0",
+        "is_cash_league": "0",
+        "current_week": 13,
+        "start_week": "1",
+        "start_date": "2025-10-21",
+        "end_week": "21",
+        "end_date": "2026-03-22",
+        "current_date": "2026-01-15",
+        "is_plus_league": "0",
+        "game_code": "nba",
+        "season": "2025"
+      },
+      {
+        "transactions": {
+          "0": {
+            "transaction": [
+              {
+                "transaction_key": "466.l.175298.tr.412",
+                "transaction_id": "412",
+                "type": "add/drop",
+                "status": "successful",
+                "timestamp": "1768475148"
+              },
+              {
+                "players": {
+                  "0": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.10327"
+                        },
+                        {
+                          "player_id": "10327"
+                        },
+                        {
+                          "name": {
+                            "full": "Cam Spencer",
+                            "first": "Cam",
+                            "last": "Spencer",
+                            "ascii_first": "Cam",
+                            "ascii_last": "Spencer"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "MEM"
+                        },
+                        {
+                          "display_position": "PG,SG"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": [
+                          {
+                            "type": "add",
+                            "source_type": "freeagents",
+                            "destination_type": "team",
+                            "destination_team_key": "466.l.175298.t.1",
+                            "destination_team_name": "San Antonio Süpürs"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "1": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.6414"
+                        },
+                        {
+                          "player_id": "6414"
+                        },
+                        {
+                          "name": {
+                            "full": "Zeke Nnaji",
+                            "first": "Zeke",
+                            "last": "Nnaji",
+                            "ascii_first": "Zeke",
+                            "ascii_last": "Nnaji"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "DEN"
+                        },
+                        {
+                          "display_position": "PF,C"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": {
+                          "type": "drop",
+                          "source_type": "team",
+                          "source_team_key": "466.l.175298.t.1",
+                          "source_team_name": "San Antonio Süpürs",
+                          "destination_type": "waivers"
+                        }
+                      }
+                    ]
+                  },
+                  "count": 2
+                }
+              }
+            ]
+          },
+          "1": {
+            "transaction": [
+              {
+                "transaction_key": "466.l.175298.tr.411",
+                "transaction_id": "411",
+                "type": "drop",
+                "status": "successful",
+                "timestamp": "1768467243"
+              },
+              {
+                "players": {
+                  "0": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.10282"
+                        },
+                        {
+                          "player_id": "10282"
+                        },
+                        {
+                          "name": {
+                            "full": "Isaiah Collier",
+                            "first": "Isaiah",
+                            "last": "Collier",
+                            "ascii_first": "Isaiah",
+                            "ascii_last": "Collier"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "UTA"
+                        },
+                        {
+                          "display_position": "PG,SG"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": {
+                          "type": "drop",
+                          "source_type": "team",
+                          "source_team_key": "466.l.175298.t.2",
+                          "source_team_name": "Marko Paşa",
+                          "destination_type": "waivers"
+                        }
+                      }
+                    ]
+                  },
+                  "count": 1
+                }
+              }
+            ]
+          },
+          "2": {
+            "transaction": [
+              {
+                "transaction_key": "466.l.175298.tr.410",
+                "transaction_id": "410",
+                "type": "drop",
+                "status": "successful",
+                "timestamp": "1768465470"
+              },
+              {
+                "players": {
+                  "0": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.6709"
+                        },
+                        {
+                          "player_id": "6709"
+                        },
+                        {
+                          "name": {
+                            "full": "Jake LaRavia",
+                            "first": "Jake",
+                            "last": "LaRavia",
+                            "ascii_first": "Jake",
+                            "ascii_last": "LaRavia"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "LAL"
+                        },
+                        {
+                          "display_position": "SF,PF"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": {
+                          "type": "drop",
+                          "source_type": "team",
+                          "source_team_key": "466.l.175298.t.3",
+                          "source_team_name": "Yoda",
+                          "destination_type": "waivers"
+                        }
+                      }
+                    ]
+                  },
+                  "count": 1
+                }
+              }
+            ]
+          },
+          "3": {
+            "transaction": [
+              {
+                "transaction_key": "466.l.175298.tr.409",
+                "transaction_id": "409",
+                "type": "add/drop",
+                "status": "successful",
+                "timestamp": "1768393593"
+              },
+              {
+                "players": {
+                  "0": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.10279"
+                        },
+                        {
+                          "player_id": "10279"
+                        },
+                        {
+                          "name": {
+                            "full": "Jaylon Tyson",
+                            "first": "Jaylon",
+                            "last": "Tyson",
+                            "ascii_first": "Jaylon",
+                            "ascii_last": "Tyson"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "CLE"
+                        },
+                        {
+                          "display_position": "SG,SF"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": [
+                          {
+                            "type": "add",
+                            "source_type": "freeagents",
+                            "destination_type": "team",
+                            "destination_team_key": "466.l.175298.t.1",
+                            "destination_team_name": "San Antonio Süpürs"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "1": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.6171"
+                        },
+                        {
+                          "player_id": "6171"
+                        },
+                        {
+                          "name": {
+                            "full": "Rui Hachimura",
+                            "first": "Rui",
+                            "last": "Hachimura",
+                            "ascii_first": "Rui",
+                            "ascii_last": "Hachimura"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "LAL"
+                        },
+                        {
+                          "display_position": "SF,PF"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": {
+                          "type": "drop",
+                          "source_type": "team",
+                          "source_team_key": "466.l.175298.t.1",
+                          "source_team_name": "San Antonio Süpürs",
+                          "destination_type": "waivers"
+                        }
+                      }
+                    ]
+                  },
+                  "count": 2
+                }
+              }
+            ]
+          },
+          "4": {
+            "transaction": [
+              {
+                "transaction_key": "466.l.175298.tr.408",
+                "transaction_id": "408",
+                "type": "add/drop",
+                "status": "successful",
+                "timestamp": "1768379400"
+              },
+              {
+                "players": {
+                  "0": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.10282"
+                        },
+                        {
+                          "player_id": "10282"
+                        },
+                        {
+                          "name": {
+                            "full": "Isaiah Collier",
+                            "first": "Isaiah",
+                            "last": "Collier",
+                            "ascii_first": "Isaiah",
+                            "ascii_last": "Collier"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "UTA"
+                        },
+                        {
+                          "display_position": "PG,SG"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": [
+                          {
+                            "type": "add",
+                            "source_type": "freeagents",
+                            "destination_type": "team",
+                            "destination_team_key": "466.l.175298.t.2",
+                            "destination_team_name": "Marko Paşa"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "1": {
+                    "player": [
+                      [
+                        {
+                          "player_key": "466.p.6717"
+                        },
+                        {
+                          "player_id": "6717"
+                        },
+                        {
+                          "name": {
+                            "full": "Nikola Jović",
+                            "first": "Nikola",
+                            "last": "Jović",
+                            "ascii_first": "Nikola",
+                            "ascii_last": "Jović"
+                          }
+                        },
+                        {
+                          "editorial_team_abbr": "MIA"
+                        },
+                        {
+                          "display_position": "PF,C"
+                        },
+                        {
+                          "position_type": "P"
+                        }
+                      ],
+                      {
+                        "transaction_data": {
+                          "type": "drop",
+                          "source_type": "team",
+                          "source_team_key": "466.l.175298.t.2",
+                          "source_team_name": "Marko Paşa",
+                          "destination_type": "waivers"
+                        }
+                      }
+                    ]
+                  },
+                  "count": 2
+                }
+              }
+            ]
+          },
+          "count": 5
+        }
+      }
+    ],
+    "time": "35.507917404175ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

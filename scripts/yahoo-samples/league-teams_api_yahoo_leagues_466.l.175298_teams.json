@@ -1,0 +1,1051 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/league/466.l.175298/teams",
+    "league": [
+      {
+        "league_key": "466.l.175298",
+        "league_id": "175298",
+        "name": "Haftalık Fantezi - Sezon 3 🏀",
+        "url": "https://basketball.fantasysports.yahoo.com/nba/175298",
+        "logo_url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/73ddcf660473a08073904db6291701578bcf69d6034aeb593402e3251722dc33.jpg",
+        "password": "",
+        "draft_status": "postdraft",
+        "num_teams": 12,
+        "edit_key": "2026-01-15",
+        "weekly_deadline": "intraday",
+        "roster_type": "date",
+        "league_update_timestamp": "1768467049",
+        "scoring_type": "head",
+        "league_type": "private",
+        "renew": "",
+        "renewed": "",
+        "felo_tier": "silver",
+        "is_highscore": false,
+        "matchup_week": 13,
+        "iris_group_chat_id": "",
+        "short_invitation_url": "https://basketball.fantasysports.yahoo.com/nba/175298/invitation?key=2ddaeddf94e860b8&ikey=02d0b7e34ac92b7e",
+        "allow_add_to_dl_extra_pos": 1,
+        "is_pro_league": "0",
+        "is_cash_league": "0",
+        "current_week": 13,
+        "start_week": "1",
+        "start_date": "2025-10-21",
+        "end_week": "21",
+        "end_date": "2026-03-22",
+        "current_date": "2026-01-15",
+        "is_plus_league": "0",
+        "game_code": "nba",
+        "season": "2025"
+      },
+      {
+        "teams": {
+          "0": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.1"
+                },
+                {
+                  "team_id": "1"
+                },
+                {
+                  "name": "San Antonio Süpürs"
+                },
+                {
+                  "is_owned_by_current_login": 1
+                },
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/1"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/e89d9d71356ec17e5af991b464d093d148cf6a95d973453ecd7595cffb71ceb3.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 5
+                },
+                {
+                  "faab_balance": "45"
+                },
+                {
+                  "number_of_moves": 64
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "5"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 198
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "1",
+                        "nickname": "Faruk",
+                        "guid": "GBBDRKNNIJ46SDETCZ6DLAEBIA",
+                        "is_commissioner": "1",
+                        "is_current_login": "1",
+                        "email": "farukkamcici@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "751",
+                        "felo_tier": "gold"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "1": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.2"
+                },
+                {
+                  "team_id": "2"
+                },
+                {
+                  "name": "Marko Paşa"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/2"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/31ac942edbcfb9a2a94cb93de866b0075d76be46ee04489ee438c53bfc490339.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 3
+                },
+                {
+                  "faab_balance": "6"
+                },
+                {
+                  "number_of_moves": 56
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "1"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 199
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "2",
+                        "nickname": "Marko",
+                        "guid": "3B5H2AADMI27Z3ZJHPVJCL65NA",
+                        "email": "okan2325@outlook.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "861",
+                        "felo_tier": "platinum"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "2": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.3"
+                },
+                {
+                  "team_id": "3"
+                },
+                {
+                  "name": "Yoda"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/3"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/6ffb35c9df18dcf24e58a78b1c6cdf0528b1ae4095d5064aac32152b826913f2.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 12
+                },
+                {
+                  "faab_balance": "84"
+                },
+                {
+                  "number_of_moves": 34
+                },
+                {
+                  "number_of_trades": "1"
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "2"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "3",
+                        "nickname": "Ömer",
+                        "guid": "XO5QKN5UYME4HMNIZXP3ML6LMY",
+                        "email": "omer.f.akman37@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "863",
+                        "felo_tier": "platinum"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "3": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.4"
+                },
+                {
+                  "team_id": "4"
+                },
+                {
+                  "name": "Gentleman Sweep"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/4"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://s.yimg.com/ep/cx/blendr/v2/image-elf-1-png_1729555617129.png"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 7
+                },
+                {
+                  "faab_balance": "90"
+                },
+                {
+                  "number_of_moves": 24
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "1"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "4",
+                        "nickname": "Mehmet",
+                        "guid": "KAOAAGG67O2WXWPWQDNTYZTVQQ",
+                        "email": "mehmetkucuk2412@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "766",
+                        "felo_tier": "gold"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "4": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.5"
+                },
+                {
+                  "team_id": "5"
+                },
+                {
+                  "name": "Red lightnings"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/5"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/bb42d7b3914a3f79279fad7f73388a3c3cf0b173c962dbf0253a9737709d28f9.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 4
+                },
+                {
+                  "faab_balance": "97"
+                },
+                {
+                  "number_of_moves": 34
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "2"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 199
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "5",
+                        "nickname": "kaan",
+                        "guid": "JXUYQSW3KNDDXPTP6WEWNEDVCQ",
+                        "email": "kaangumuss@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "852",
+                        "felo_tier": "platinum"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "5": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.6"
+                },
+                {
+                  "team_id": "6"
+                },
+                {
+                  "name": "shenn's Marvelous Team"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/6"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://s.yimg.com/ep/cx/blendr/v2/image-fire-png_1721175557050.png"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 10
+                },
+                {
+                  "faab_balance": "100"
+                },
+                {
+                  "number_of_moves": 8
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 187
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "6",
+                        "nickname": "shenn",
+                        "guid": "FCMAUQNARIGRZQV2ND7HY2A2JU",
+                        "email": "wwwsakicibilal@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "617",
+                        "felo_tier": "silver"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "6": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.7"
+                },
+                {
+                  "team_id": "7"
+                },
+                {
+                  "name": "Atamanakis 🇬🇷"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/7"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/0f214817d6e0a5a2803734828c6b9c57ca1a034a6609fe48d784c14e1a30badd.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 8
+                },
+                {
+                  "faab_balance": "84"
+                },
+                {
+                  "number_of_moves": 37
+                },
+                {
+                  "number_of_trades": "1"
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "7",
+                        "nickname": "Ata",
+                        "guid": "BHXW2L4MOU3RTPSF5QICS45D6A",
+                        "email": "atatokdemir23@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "806",
+                        "felo_tier": "platinum"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "7": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.8"
+                },
+                {
+                  "team_id": "8"
+                },
+                {
+                  "name": "White Wolves"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/8"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/4d2810f7e17edb9b3c8abb798e510606dc898332525f640654f9cc18b817bfdc.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 9
+                },
+                {
+                  "faab_balance": "100"
+                },
+                {
+                  "number_of_moves": 5
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 197
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "8",
+                        "nickname": "Furkan",
+                        "guid": "WMVJ6E5JRTTBJBZWFMRNOTVVSQ",
+                        "email": "yildirimfurkan57@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "520",
+                        "felo_tier": "bronze"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "8": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.9"
+                },
+                {
+                  "team_id": "9"
+                },
+                {
+                  "name": "Karabüllük Zencileri"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/9"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/7063de6ddb2dce780a4f57b0c59fbae93cabb461a93ed1372efec3a431328c25.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 11
+                },
+                {
+                  "faab_balance": "100"
+                },
+                {
+                  "number_of_moves": 7
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "9",
+                        "nickname": "Talha",
+                        "guid": "V5EVEJZSZWNP4T5MKGMC4GF37M",
+                        "email": "yarasitalha@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "588",
+                        "felo_tier": "bronze"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "9": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.10"
+                },
+                {
+                  "team_id": "10"
+                },
+                {
+                  "name": "Stevens Ranch"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/10"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://s.yimg.com/ep/cx/blendr/v2/image-wolf-1-png_1721175947653.png"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 1
+                },
+                {
+                  "faab_balance": "100"
+                },
+                {
+                  "number_of_moves": 0
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 198
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "10",
+                        "nickname": "Yusuf",
+                        "guid": "AHPB77GHDKDBGOUNPDX3XSBM4M",
+                        "email": "ytaskiran70@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "613",
+                        "felo_tier": "silver"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "10": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.11"
+                },
+                {
+                  "team_id": "11"
+                },
+                {
+                  "name": "GAP4S's Grand Team"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/11"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://s.yimg.com/ep/cx/blendr/v2/image-witch-png_1721174369206.png"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 2
+                },
+                {
+                  "faab_balance": "100"
+                },
+                {
+                  "number_of_moves": 3
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "11",
+                        "nickname": "GAP4S",
+                        "guid": "BVAPFMQTUVFFNUXAFQWJIA2SL4",
+                        "email": "selimen74@yahoo.com",
+                        "image_url": "https://s.yimg.com/ag/images/d57163f9-3b47-4cce-bf65-2106c4f3bb18Cn_64sq.jpg",
+                        "felo_score": "524",
+                        "felo_tier": "bronze"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "11": {
+            "team": [
+              [
+                {
+                  "team_key": "466.l.175298.t.12"
+                },
+                {
+                  "team_id": "12"
+                },
+                {
+                  "name": "Bu Basketbol Entel İnsan İşi"
+                },
+                [],
+                {
+                  "url": "https://basketball.fantasysports.yahoo.com/nba/175298/12"
+                },
+                {
+                  "team_logos": [
+                    {
+                      "team_logo": {
+                        "size": "large",
+                        "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/787d5d70068900b30a4852bacd04b3c7250422ae07ac92ebd0c41f6ba7fcc56e.jpg"
+                      }
+                    }
+                  ]
+                },
+                [],
+                [],
+                {
+                  "waiver_priority": 6
+                },
+                {
+                  "faab_balance": "92"
+                },
+                {
+                  "number_of_moves": 32
+                },
+                {
+                  "number_of_trades": 0
+                },
+                {
+                  "roster_adds": {
+                    "coverage_type": "week",
+                    "coverage_value": 13,
+                    "value": "0"
+                  }
+                },
+                [],
+                {
+                  "league_scoring_type": "head"
+                },
+                [],
+                [],
+                {
+                  "has_draft_grade": 0
+                },
+                {
+                  "auction_budget_total": "200"
+                },
+                {
+                  "auction_budget_spent": 200
+                },
+                [],
+                [],
+                [],
+                {
+                  "managers": [
+                    {
+                      "manager": {
+                        "manager_id": "12",
+                        "nickname": "Enes",
+                        "guid": "XVLPCKPRC2R72GMP3XA3BWV6KA",
+                        "email": "enesgunhan.egn@gmail.com",
+                        "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+                        "felo_score": "595",
+                        "felo_tier": "bronze"
+                      }
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "count": 12
+        }
+      }
+    ],
+    "time": "180.3719997406ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

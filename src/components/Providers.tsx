@@ -1,5 +1,6 @@
 "use client";
 
+import { LeagueProvider } from "@/contexts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode, useState } from "react";
@@ -34,7 +35,9 @@ export function Providers({ children }: ProvidersProps) {
     <ThemeProvider>
       <SessionProvider>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <LeagueProvider>
+            {children}
+          </LeagueProvider>
         </QueryClientProvider>
       </SessionProvider>
     </ThemeProvider>

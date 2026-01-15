@@ -71,6 +71,7 @@ export interface YahooLeague {
   start_date: string;
   end_week: string;
   end_date: string;
+  is_finished?: boolean;
   game_code: string;
   season: string;
   settings?: YahooLeagueSettings;
@@ -177,6 +178,7 @@ export interface YahooTeam {
   url: string;
   team_logos?: { team_logo: { size: string; url: string } }[];
   waiver_priority?: number;
+  faab_balance?: number;
   number_of_moves?: number;
   number_of_trades?: number;
   roster_adds?: {
@@ -210,6 +212,7 @@ export interface YahooManager {
 export interface YahooRoster {
   coverage_type: string;
   week?: number;
+  date?: string;
   is_editable?: boolean;
   players: YahooPlayer[];
 }
@@ -247,12 +250,14 @@ export interface YahooPlayer {
   selected_position?: {
     coverage_type: string;
     week?: number;
+    date?: string;
     position: string;
     is_flex?: boolean;
   };
   starting_status?: {
     coverage_type: string;
     week?: number;
+    date?: string;
     is_starting: boolean;
   };
   transaction_data?: {
@@ -516,6 +521,7 @@ export interface SimplifiedTeam {
   wins?: number;
   losses?: number;
   ties?: number;
+  leagueKey?: string; // Added for user teams endpoint
 }
 
 export interface SimplifiedPlayer {
@@ -532,25 +538,28 @@ export interface SimplifiedPlayer {
   injuryNote?: string;
   selectedPosition?: string;
   percentOwned?: number;
+  stats?: Record<string, number>;
 }
 
 export interface SimplifiedMatchup {
   week: number;
-  status: 'upcoming' | 'in_progress' | 'completed';
+  status: "upcoming" | "in_progress" | "completed";
   isPlayoffs: boolean;
   myTeam: {
+    key?: string;
     name: string;
     points?: number;
     projectedPoints?: number;
     stats?: Record<string, number>;
   };
   opponent: {
+    key?: string;
     name: string;
     points?: number;
     projectedPoints?: number;
     stats?: Record<string, number>;
   };
-  statWinners?: Record<string, 'win' | 'loss' | 'tie'>;
+  statWinners?: Record<string, "win" | "loss" | "tie">;
 }
 
 export interface WeeklyStats {
@@ -571,3 +580,88 @@ export interface SeasonStats {
   ties: number;
   winPercentage: number;
 }
+
+// =============================================================================
+// TRANSACTION TYPES
+// =============================================================================
+
+export interface SimplifiedTransaction {
+  key: string;
+  type: "add" | "drop" | "add/drop" | "trade" | "waiver";
+  status: "successful" | "pending" | "failed";
+  timestamp: number;
+  players: SimplifiedTransactionPlayer[];
+}
+
+export interface SimplifiedTransactionPlayer {
+  key: string;
+  name: string;
+  type: "add" | "drop";
+  sourceTeamKey?: string;
+  sourceTeamName?: string;
+  destTeamKey?: string;
+  destTeamName?: string;
+}
+
+// =============================================================================
+// DRAFT TYPES
+// =============================================================================
+
+export interface SimplifiedDraftPick {
+  pick: number;
+  round: number;
+  teamKey: string;
+  teamName?: string;
+  playerKey: string;
+  playerName?: string;
+}
+
+// =============================================================================
+// GAME TYPES
+// =============================================================================
+
+export interface SimplifiedGame {
+  key: string;
+  id: string;
+  name: string;
+  code: string;
+  type: string;
+  url: string;
+  season: string;
+  isRegistrationOver: boolean;
+  isGameOver: boolean;
+  isOffseason: boolean;
+}
+
+// =============================================================================
+// ROSTER UPDATE TYPES
+// =============================================================================
+
+export interface RosterUpdate {
+  date?: string;
+  week?: number;
+  players: RosterPositionUpdate[];
+}
+
+export interface RosterPositionUpdate {
+  playerKey: string;
+  position: string;
+}
+
+// =============================================================================
+// API RESPONSE TYPES
+// =============================================================================
+
+export interface ApiSuccessResponse<T> {
+  success: true;
+  data?: T;
+  [key: string]: unknown;
+}
+
+export interface ApiErrorResponse {
+  success?: false;
+  error: string;
+  details?: string;
+}
+
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;

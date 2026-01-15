@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "inspect:yahoo": "node ./scripts/inspect-yahoo-endpoints.mjs",
+    "samples:yahoo": "node ./scripts/fetch-yahoo-samples.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.16",

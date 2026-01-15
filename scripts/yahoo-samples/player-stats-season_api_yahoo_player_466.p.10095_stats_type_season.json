@@ -1,0 +1,325 @@
+{
+  "fantasy_content": {
+    "xml:lang": "en-US",
+    "yahoo:uri": "/fantasy/v2/player/466.p.10095/stats;type=season",
+    "player": [
+      [
+        {
+          "player_key": "466.p.10095"
+        },
+        {
+          "player_id": "10095"
+        },
+        {
+          "name": {
+            "full": "Anthony Black",
+            "first": "Anthony",
+            "last": "Black",
+            "ascii_first": "Anthony",
+            "ascii_last": "Black"
+          }
+        },
+        {
+          "url": "https://sports.yahoo.com/nba/players/10095"
+        },
+        {
+          "editorial_player_key": "nba.p.10095"
+        },
+        {
+          "editorial_team_key": "nba.t.19"
+        },
+        {
+          "editorial_team_full_name": "Orlando Magic"
+        },
+        {
+          "editorial_team_abbr": "ORL"
+        },
+        {
+          "editorial_team_url": "https://sports.yahoo.com/nba/teams/orlando/"
+        },
+        {
+          "is_keeper": {
+            "status": false,
+            "cost": false
+          }
+        },
+        {
+          "uniform_number": "0"
+        },
+        {
+          "display_position": "PG,SG,SF"
+        },
+        {
+          "headshot": {
+            "url": "https://s.yimg.com/iu/api/res/1.2/T6F7og_dLKBlhQTPuu9TGA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/10095.png",
+            "size": "small"
+          },
+          "image_url": "https://s.yimg.com/iu/api/res/1.2/T6F7og_dLKBlhQTPuu9TGA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nba_cutout/players_l/11172025/10095.png"
+        },
+        {
+          "is_undroppable": "0"
+        },
+        {
+          "position_type": "P"
+        },
+        [],
+        {
+          "eligible_positions": [
+            {
+              "position": "PG"
+            },
+            {
+              "position": "SF"
+            },
+            {
+              "position": "SG"
+            }
+          ]
+        },
+        {
+          "eligible_positions_to_add": []
+        },
+        [],
+        [],
+        {
+          "has_player_notes": 1
+        },
+        [],
+        {
+          "player_notes_last_timestamp": 1768179072
+        }
+      ],
+      {
+        "player_stats": {
+          "0": {
+            "coverage_type": "season",
+            "season": "2025"
+          },
+          "stats": [
+            {
+              "stat": {
+                "stat_id": "0",
+                "value": "40"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1",
+                "value": "-"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "2",
+                "value": "1212"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "3",
+                "value": "488"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "4",
+                "value": "227"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "5",
+                "value": ".465"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "6",
+                "value": "155"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "7",
+                "value": "112"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "8",
+                "value": ".723"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "9",
+                "value": "177"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "10",
+                "value": "62"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "11",
+                "value": ".350"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "12",
+                "value": "628"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "13",
+                "value": "32"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "14",
+                "value": "132"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "15",
+                "value": "164"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "16",
+                "value": "157"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "17",
+                "value": "53"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "18",
+                "value": "27"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "19",
+                "value": "97"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "20",
+                "value": "1.619"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "21",
+                "value": "110"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "22",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "23",
+                "value": "2"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "24",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "25",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "27",
+                "value": "2"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "28",
+                "value": "0"
+              }
+            }
+          ]
+        },
+        "player_advanced_stats": {
+          "0": {
+            "coverage_type": "season",
+            "season": "2025"
+          },
+          "stats": [
+            {
+              "stat": {
+                "stat_id": "1001",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1006",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1007",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1008",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1011",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1012",
+                "value": "0"
+              }
+            },
+            {
+              "stat": {
+                "stat_id": "1013",
+                "value": "0"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "time": "28.646945953369ms",
+    "copyright": "Certain Data by Sportradar, Stats Perform and Rotowire",
+    "refresh_rate": "60"
+  }
+}

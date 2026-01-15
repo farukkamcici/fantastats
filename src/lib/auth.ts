@@ -45,6 +45,11 @@ declare module "next-auth/jwt" {
  * Refresh Yahoo access token using refresh token
  * Yahoo's token endpoint requires Basic auth with client credentials
  */
+function parseTokenResponse(responseText: string): Record<string, unknown> {
+  const parsed = JSON.parse(responseText) as Record<string, unknown>;
+  return parsed;
+}
+
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   console.log("[Auth] Attempting to refresh access token...");
   
@@ -79,10 +84,10 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     });
 
     const responseText = await response.text();
-    let refreshedTokens: any;
-    
+    let refreshedTokens: Record<string, unknown>;
+
     try {
-      refreshedTokens = JSON.parse(responseText);
+      refreshedTokens = parseTokenResponse(responseText);
     } catch {
       console.error("[Auth] Failed to parse refresh response:", responseText);
       throw new Error("Invalid response from Yahoo token endpoint");
@@ -91,7 +96,10 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     if (!response.ok) {
       console.error("[Auth] Token refresh failed:", refreshedTokens);
       // Yahoo returns error in different formats
-      const errorMsg = refreshedTokens.error_description || refreshedTokens.error || "Token refresh failed";
+      const errorMsg =
+        (refreshedTokens.error_description as string | undefined) ||
+        (refreshedTokens.error as string | undefined) ||
+        "Token refresh failed";
       throw new Error(errorMsg);
     }
 
@@ -99,10 +107,13 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     
     return {
       ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + (refreshedTokens.expires_in || 3600) * 1000,
+      accessToken: refreshedTokens.access_token as string | undefined,
+      accessTokenExpires:
+        Date.now() +
+        (((refreshedTokens.expires_in as number | undefined) || 3600) * 1000),
       // Yahoo may or may not return a new refresh token
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+      refreshToken:
+        (refreshedTokens.refresh_token as string | undefined) ?? token.refreshToken,
       error: undefined, // Clear any previous errors
     };
   } catch (error) {
@@ -159,10 +170,10 @@ export const authOptions: NextAuthOptions = {
           });
 
           const responseText = await response.text();
-          let tokens: any;
+          let tokens: Record<string, unknown>;
           
           try {
-            tokens = JSON.parse(responseText);
+            tokens = parseTokenResponse(responseText);
           } catch {
             console.error("[Auth] Failed to parse token response:", responseText);
             throw new Error("Invalid response from Yahoo");
@@ -170,7 +181,11 @@ export const authOptions: NextAuthOptions = {
 
           if (!response.ok) {
             console.error("[Auth] Token exchange failed:", tokens);
-            throw new Error(tokens.error_description || tokens.error || "Token exchange failed");
+            throw new Error(
+              (tokens.error_description as string | undefined) ||
+                (tokens.error as string | undefined) ||
+                "Token exchange failed"
+            );
           }
 
           console.log("[Auth] Token exchange successful");

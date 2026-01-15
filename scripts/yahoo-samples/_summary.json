@@ -1,0 +1,137 @@
+{
+  "generatedAt": "2026-01-15T13:46:01.510Z",
+  "endpoints": [
+    {
+      "id": "game",
+      "endpoint": "/game/nba",
+      "status": "ok",
+      "file": "game_api_yahoo_game_nba.json"
+    },
+    {
+      "id": "user-leagues",
+      "endpoint": "/users;use_login=1/games;game_keys=nba/leagues",
+      "status": "ok",
+      "file": "leagues_api_yahoo_leagues.json"
+    },
+    {
+      "id": "user-teams",
+      "endpoint": "/users;use_login=1/games;game_keys=nba/teams",
+      "status": "ok",
+      "file": "user-teams_api_yahoo_user_teams.json"
+    },
+    {
+      "id": "league",
+      "endpoint": "/league/466.l.175298",
+      "status": "ok",
+      "file": "league_api_yahoo_leagues_466.l.175298.json"
+    },
+    {
+      "id": "league-settings",
+      "endpoint": "/league/466.l.175298/settings",
+      "status": "ok",
+      "file": "league-settings_api_yahoo_leagues_466.l.175298_settings.json"
+    },
+    {
+      "id": "league-standings",
+      "endpoint": "/league/466.l.175298/standings",
+      "status": "ok",
+      "file": "league-standings_api_yahoo_leagues_466.l.175298_standings.json"
+    },
+    {
+      "id": "league-scoreboard",
+      "endpoint": "/league/466.l.175298/scoreboard",
+      "status": "ok",
+      "file": "league-scoreboard_api_yahoo_leagues_466.l.175298_scoreboard.json"
+    },
+    {
+      "id": "league-scoreboard-week-1",
+      "endpoint": "/league/466.l.175298/scoreboard;week=1",
+      "status": "ok",
+      "file": "league-scoreboard-week_api_yahoo_leagues_466.l.175298_scoreboard_week_1.json"
+    },
+    {
+      "id": "league-teams",
+      "endpoint": "/league/466.l.175298/teams",
+      "status": "ok",
+      "file": "league-teams_api_yahoo_leagues_466.l.175298_teams.json"
+    },
+    {
+      "id": "league-transactions",
+      "endpoint": "/league/466.l.175298/transactions;count=5;start=0",
+      "status": "ok",
+      "file": "league-transactions_api_yahoo_leagues_466.l.175298_transactions_count_5_start_0.json"
+    },
+    {
+      "id": "league-draftresults",
+      "endpoint": "/league/466.l.175298/draftresults",
+      "status": "ok",
+      "file": "league-draftresults_api_yahoo_leagues_466.l.175298_draftresults.json"
+    },
+    {
+      "id": "league-players-fa",
+      "endpoint": "/league/466.l.175298/players;status=FA;count=5;start=0",
+      "status": "ok",
+      "file": "league-players-fa_api_yahoo_leagues_466.l.175298_players_status_FA_count_5_start_0.json"
+    },
+    {
+      "id": "league-players-search",
+      "endpoint": "/league/466.l.175298/players;search=jokic",
+      "status": "ok",
+      "file": "league-players-search_api_yahoo_leagues_466.l.175298_players_search_jokic.json"
+    },
+    {
+      "id": "team",
+      "endpoint": "/team/466.l.175298.t.1",
+      "status": "ok",
+      "file": "team_api_yahoo_team_466.l.175298.t.1.json"
+    },
+    {
+      "id": "team-roster",
+      "endpoint": "/team/466.l.175298.t.1/roster",
+      "status": "ok",
+      "file": "roster-current_api_yahoo_roster_466.l.175298.t.1.json"
+    },
+    {
+      "id": "team-roster-week-1",
+      "endpoint": "/team/466.l.175298.t.1/roster;week=1",
+      "status": "ok",
+      "file": "roster-week_api_yahoo_roster_466.l.175298.t.1_week_1.json"
+    },
+    {
+      "id": "team-matchups",
+      "endpoint": "/team/466.l.175298.t.1/matchups",
+      "status": "ok",
+      "file": "team-matchups_api_yahoo_team_466.l.175298.t.1_matchups.json"
+    },
+    {
+      "id": "team-stats-season",
+      "endpoint": "/team/466.l.175298.t.1/stats;type=season",
+      "status": "ok",
+      "file": "team-stats-season_api_yahoo_team_466.l.175298.t.1_stats_type_season.json"
+    },
+    {
+      "id": "team-stats-week-1",
+      "endpoint": "/team/466.l.175298.t.1/stats;type=week;week=1",
+      "status": "ok",
+      "file": "team-stats-week_api_yahoo_team_466.l.175298.t.1_stats_type_week_week_1.json"
+    },
+    {
+      "id": "player",
+      "endpoint": "/player/466.p.10095",
+      "status": "ok",
+      "file": "player_api_yahoo_player_466.p.10095.json"
+    },
+    {
+      "id": "player-stats-season",
+      "endpoint": "/player/466.p.10095/stats;type=season",
+      "status": "ok",
+      "file": "player-stats-season_api_yahoo_player_466.p.10095_stats_type_season.json"
+    },
+    {
+      "id": "player-stats-week-1",
+      "endpoint": "/player/466.p.10095/stats;type=week;week=1",
+      "status": "ok",
+      "file": "player-stats-week_api_yahoo_player_466.p.10095_stats_type_week_week_1.json"
+    }
+  ]
+}

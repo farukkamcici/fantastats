@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -30,7 +31,9 @@ export function UserMenu({ className = "" }: UserMenuProps) {
 
   if (status === "loading") {
     return (
-      <div className={`w-10 h-10 bg-gray-200 rounded-full animate-pulse ${className}`} />
+      <div
+        className={`w-10 h-10 rounded-full border border-[var(--border-default)] bg-[var(--bg-subtle)] animate-pulse ${className}`}
+      />
     );
   }
 
@@ -45,23 +48,25 @@ export function UserMenu({ className = "" }: UserMenuProps) {
     <div className={`relative ${className}`} ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+        className="flex items-center gap-2 p-1 rounded-full hover:bg-[var(--bg-subtle)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-surface)]"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {userImage ? (
-          <img
+          <Image
             src={userImage}
             alt={session.user?.name || "User"}
-            className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+            width={40}
+            height={40}
+            className="w-10 h-10 rounded-full object-cover border-2 border-[var(--border-default)]"
           />
         ) : (
-          <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-semibold text-lg">
+          <div className="w-10 h-10 rounded-full bg-[var(--accent)] text-white flex items-center justify-center font-semibold text-lg">
             {userInitial}
           </div>
         )}
         <svg
-          className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`w-4 h-4 text-[var(--text-tertiary)] transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -71,13 +76,13 @@ export function UserMenu({ className = "" }: UserMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+        <div className="absolute right-0 mt-2 w-56 bg-[var(--bg-elevated)] rounded-lg shadow-lg border border-[var(--border-default)] py-2 z-50">
           {/* User Info */}
-          <div className="px-4 py-3 border-b border-gray-100">
-            <p className="font-semibold text-gray-900 truncate">
+          <div className="px-4 py-3 border-b border-[var(--border-subtle)]">
+            <p className="font-semibold text-[var(--text-primary)] truncate">
               {session.user?.name || "User"}
             </p>
-            <p className="text-sm text-gray-500 truncate">
+            <p className="text-sm text-[var(--text-tertiary)] truncate">
               {session.user?.email || ""}
             </p>
           </div>
@@ -86,10 +91,10 @@ export function UserMenu({ className = "" }: UserMenuProps) {
           <div className="py-1">
             <Link
               href="/leagues"
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="flex items-center px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-primary)]"
               onClick={() => setIsOpen(false)}
             >
-              <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-3 text-[var(--text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -102,15 +107,15 @@ export function UserMenu({ className = "" }: UserMenuProps) {
           </div>
 
           {/* Sign Out */}
-          <div className="border-t border-gray-100 py-1">
+          <div className="border-t border-[var(--border-subtle)] py-1">
             <button
               onClick={() => {
                 setIsOpen(false);
                 signOut({ callbackUrl: "/" });
               }}
-              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+              className="flex items-center w-full px-4 py-2 text-sm text-[var(--error)] hover:bg-[var(--error-muted)]"
             >
-              <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-3 text-[var(--error)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export interface LeagueInfo {
   key: string;
@@ -30,7 +30,14 @@ function loadStoredLeague(): LeagueInfo | null {
 }
 
 export function LeagueProvider({ children }: { children: ReactNode }) {
-  const [currentLeague, setCurrentLeagueState] = useState<LeagueInfo | null>(loadStoredLeague);
+  const [currentLeague, setCurrentLeagueState] = useState<LeagueInfo | null>(null);
+
+  useEffect(() => {
+    const stored = loadStoredLeague();
+    if (stored) {
+      setCurrentLeagueState(stored);
+    }
+  }, []);
 
   const setCurrentLeague = (league: LeagueInfo | null) => {
     setCurrentLeagueState(league);

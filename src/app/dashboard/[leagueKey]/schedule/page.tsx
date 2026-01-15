@@ -5,6 +5,9 @@ import { Calendar, Clock } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ leagueKey: string }>;
 }
@@ -19,12 +22,15 @@ export default async function SchedulePage({ params }: PageProps) {
 
   const { startDate, endDate, days } = getWeekRange(new Date());
   let games: NbaGame[] = [];
+  const hasNbaKey = Boolean(process.env.BALLDONTLIE_API_KEY);
 
-  try {
-    const nbaClient = new NbaClient();
-    games = await nbaClient.getGames({ startDate, endDate });
-  } catch (error) {
-    console.error("Error fetching NBA schedule:", error);
+  if (hasNbaKey) {
+    try {
+      const nbaClient = new NbaClient();
+      games = await nbaClient.getGames({ startDate, endDate });
+    } catch (error) {
+      console.error("Error fetching NBA schedule:", error);
+    }
   }
 
   const gamesByDate = groupGamesByDate(games);
@@ -54,6 +60,13 @@ export default async function SchedulePage({ params }: PageProps) {
             {games.length} games this week
           </div>
         </div>
+
+        {!hasNbaKey && (
+          <div className="mb-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-subtle)] px-4 py-3 text-sm text-[var(--text-secondary)]">
+            NBA schedule data is unavailable. Add `BALLDONTLIE_API_KEY` in your
+            production environment to enable this view.
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <div className="min-w-[720px] grid grid-cols-7 gap-3">

@@ -3,18 +3,18 @@ import { NbaClient } from "@/lib/nba/client";
 import { getBalldontlieTeamId } from "@/lib/nba/teamMapping";
 import { createYahooClient } from "@/lib/yahoo/client";
 import { ExportButton } from "@/components/export/ExportButton";
-import { getOptimalLineupByGames } from "@/lib/analysis/lineup";
-import type { LineupSuggestion } from "@/lib/analysis/lineup";
-import type { SimplifiedPlayer } from "@/lib/yahoo/types";
+import type { SimplifiedPlayer, YahooStatCategoryEntry } from "@/lib/yahoo/types";
 import {
     AlertCircle,
-    Clock,
     Shirt,
     User,
     Users,
 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface PageProps {
   params: Promise<{ leagueKey: string }>;
@@ -36,8 +36,8 @@ export default async function TeamPage({ params }: PageProps) {
   let roster: SimplifiedPlayer[] = [];
   let gamesByTeamId = new Map<number, number>();
   let weekRange: { startDate: string; endDate: string } | null = null;
-  let lineupSuggestions: LineupSuggestion[] = [];
   let errorState: "no-access" | "fetch-error" | null = null;
+  const hasNbaKey = Boolean(process.env.BALLDONTLIE_API_KEY);
   
   try {
     // Get user's team in this league
@@ -55,16 +55,17 @@ export default async function TeamPage({ params }: PageProps) {
 
     if (roster.length > 0) {
       weekRange = getWeekRange(new Date());
-      try {
-        const nbaClient = new NbaClient();
-        const games = await nbaClient.getGames({
-          startDate: weekRange.startDate,
-          endDate: weekRange.endDate,
-        });
-        gamesByTeamId = countGamesByTeamId(games);
-        lineupSuggestions = getOptimalLineupByGames(roster, gamesByTeamId, 8);
-      } catch (scheduleError) {
-        console.error("Error fetching NBA schedule:", scheduleError);
+      if (hasNbaKey) {
+        try {
+          const nbaClient = new NbaClient();
+          const games = await nbaClient.getGames({
+            startDate: weekRange.startDate,
+            endDate: weekRange.endDate,
+          });
+          gamesByTeamId = countGamesByTeamId(games);
+        } catch (scheduleError) {
+          console.error("Error fetching NBA schedule:", scheduleError);
+        }
       }
       const statWeek = league?.current_week;
       const statType = statWeek ? "week" : "season";
@@ -132,6 +133,10 @@ export default async function TeamPage({ params }: PageProps) {
   const injured = roster.filter((p) =>
     ["IL", "IL+", "NA"].includes(p.selectedPosition || "")
   );
+  const orderedPlayers = [...starters, ...bench, ...injured];
+  const statColumns = buildStatColumns(
+    league?.settings?.stat_categories?.stats || []
+  );
 
   return (
     <div className="space-y-8">
@@ -180,34 +185,10 @@ export default async function TeamPage({ params }: PageProps) {
 
       {/* Roster */}
       <div className="space-y-6">
-        {lineupSuggestions.length > 0 && (
-          <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-              Optimal Lineup (Games This Week)
-            </h2>
-            <p className="text-xs text-[var(--text-tertiary)] mt-1">
-              Prioritized by games scheduled this week.
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {lineupSuggestions.map((suggestion) => (
-                <div
-                  key={suggestion.player.key}
-                  className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-3 flex items-center justify-between"
-                >
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--text-primary)]">
-                      {suggestion.player.name}
-                    </p>
-                    <p className="text-xs text-[var(--text-tertiary)]">
-                      {suggestion.player.teamAbbr} · {suggestion.player.position}
-                    </p>
-                  </div>
-                  <span className="text-xs font-semibold text-[var(--text-secondary)]">
-                    {suggestion.gamesThisWeek} games
-                  </span>
-                </div>
-              ))}
-            </div>
+        {!hasNbaKey && (
+          <div className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] px-4 py-3 text-sm text-[var(--text-secondary)]">
+            NBA schedule data is unavailable. Add `BALLDONTLIE_API_KEY` in your
+            production environment to enable weekly game counts.
           </div>
         )}
         {roster.length === 0 && (
@@ -217,35 +198,10 @@ export default async function TeamPage({ params }: PageProps) {
             </p>
           </div>
         )}
-        {/* Starters */}
-        {starters.length > 0 && (
-          <RosterSection
-            title="Active Roster"
-            icon={<Shirt className="w-5 h-5" />}
-            players={starters}
-            accentColor="var(--success)"
-            gamesByTeamId={gamesByTeamId}
-          />
-        )}
-
-        {/* Bench */}
-        {bench.length > 0 && (
-          <RosterSection
-            title="Bench"
-            icon={<Clock className="w-5 h-5" />}
-            players={bench}
-            accentColor="var(--warning)"
-            gamesByTeamId={gamesByTeamId}
-          />
-        )}
-
-        {/* Injured */}
-        {injured.length > 0 && (
-          <RosterSection
-            title="Injured List"
-            icon={<AlertCircle className="w-5 h-5" />}
-            players={injured}
-            accentColor="var(--error)"
+        {orderedPlayers.length > 0 && (
+          <RosterTable
+            players={orderedPlayers}
+            statColumns={statColumns}
             gamesByTeamId={gamesByTeamId}
           />
         )}
@@ -265,112 +221,125 @@ function StatBadge({ label, value }: { label: string; value: string }) {
   );
 }
 
-function RosterSection({
-  title,
-  icon,
+function RosterTable({
   players,
-  accentColor,
+  statColumns,
   gamesByTeamId,
 }: {
-  title: string;
-  icon: React.ReactNode;
   players: SimplifiedPlayer[];
-  accentColor: string;
+  statColumns: StatColumn[];
   gamesByTeamId: Map<number, number>;
 }) {
   return (
     <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl overflow-hidden">
-      <div
-        className="px-6 py-4 border-b border-[var(--border-subtle)] flex items-center gap-3"
-        style={{ color: accentColor }}
-      >
-        {icon}
+      <div className="px-6 py-4 border-b border-[var(--border-subtle)] flex items-center gap-3">
+        <Shirt className="w-5 h-5 text-[var(--accent)]" />
         <h2 className="text-base font-semibold text-[var(--text-primary)]">
-          {title}
+          Roster
         </h2>
         <span className="ml-auto text-sm text-[var(--text-tertiary)]">
           {players.length} players
         </span>
       </div>
 
-      <div className="divide-y divide-[var(--border-subtle)]">
-        {players.map((player) => (
-          <PlayerRow key={player.key} player={player} gamesByTeamId={gamesByTeamId} />
-        ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-[1100px] w-full text-sm">
+          <thead className="bg-[var(--bg-subtle)] text-[var(--text-tertiary)]">
+            <tr>
+              <th className="px-4 py-3 text-left font-medium">Pos</th>
+              <th className="px-4 py-3 text-left font-medium">Player</th>
+              <th className="px-4 py-3 text-center font-medium">Games</th>
+              <th className="px-4 py-3 text-center font-medium">% Rost</th>
+              {statColumns.map((column) => (
+                <th key={column.key} className="px-3 py-3 text-center font-medium">
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[var(--border-subtle)]">
+            {players.map((player) => (
+              <RosterRow
+                key={player.key}
+                player={player}
+                statColumns={statColumns}
+                gamesByTeamId={gamesByTeamId}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
 
-function PlayerRow({
+function RosterRow({
   player,
+  statColumns,
   gamesByTeamId,
 }: {
   player: SimplifiedPlayer;
+  statColumns: StatColumn[];
   gamesByTeamId: Map<number, number>;
 }) {
   const hasStatus = player.status && player.status !== "H";
   const teamId = player.teamAbbr ? getBalldontlieTeamId(player.teamAbbr) : undefined;
   const gamesThisWeek = teamId ? gamesByTeamId.get(teamId) : undefined;
-  const statEntries = player.stats
-    ? Object.entries(player.stats)
-        .sort(([a], [b]) => a.localeCompare(b))
-        .slice(0, 3)
-    : [];
+  const percentOwned =
+    player.percentOwned !== undefined ? `${Math.round(player.percentOwned)}%` : "-";
 
   return (
-    <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:bg-[var(--bg-subtle)] transition-colors">
-      <div className="flex items-center gap-4 min-w-0">
-        {/* Avatar */}
-        <div className="w-10 h-10 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-default)] flex items-center justify-center flex-shrink-0">
-          <User className="w-5 h-5 text-[var(--text-tertiary)]" />
-        </div>
-
-        {/* Player Info */}
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-[var(--text-primary)] truncate">
-              {player.name}
-            </span>
-            {hasStatus && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--error-muted)] text-[var(--error)] font-medium">
-                {player.status}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-2 text-sm text-[var(--text-tertiary)]">
-            <span>{player.teamAbbr}</span>
-            <span>·</span>
-            <span>{player.position}</span>
-            {gamesThisWeek !== undefined && (
-              <>
-                <span>·</span>
-                <span>{gamesThisWeek} games</span>
-              </>
-            )}
-          </div>
-          {statEntries.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2 text-xs text-[var(--text-tertiary)]">
-              {statEntries.map(([key, value]) => (
-                <span
-                  key={key}
-                  className="inline-flex items-center gap-1 rounded-full bg-[var(--bg-elevated)] px-2 py-0.5"
-                >
-                  {key.replace("stat_", "stat ")}: {value}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Slot Position */}
-      <div className="flex-shrink-0 text-right">
-        <span className="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-md bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)]">
+    <tr className="hover:bg-[var(--bg-subtle)] transition-colors">
+      <td className="px-4 py-3 text-left text-[var(--text-secondary)]">
+        <span className="inline-flex items-center px-2 py-1 rounded-full bg-[var(--bg-elevated)] text-xs font-semibold">
           {player.selectedPosition || "-"}
         </span>
-      </div>
-    </div>
+      </td>
+      <td className="px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-default)] flex items-center justify-center overflow-hidden">
+            {player.imageUrl ? (
+              <img
+                src={player.imageUrl}
+                alt={player.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <User className="w-5 h-5 text-[var(--text-tertiary)]" />
+            )}
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-[var(--text-primary)]">
+                {player.name}
+              </span>
+              {hasStatus && (
+                <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--error-muted)] text-[var(--error)] font-medium">
+                  {player.status}
+                </span>
+              )}
+            </div>
+            <div className="text-xs text-[var(--text-tertiary)]">
+              {player.teamAbbr} · {player.position}
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-3 text-center text-[var(--text-secondary)]">
+        {gamesThisWeek ?? "-"}
+      </td>
+      <td className="px-4 py-3 text-center text-[var(--text-secondary)]">
+        {percentOwned}
+      </td>
+      {statColumns.map((column) => (
+        <td
+          key={`${player.key}-${column.key}`}
+          className="px-3 py-3 text-center text-[var(--text-secondary)]"
+        >
+          {getStatValue(player.stats, column, column.label)}
+        </td>
+      ))}
+    </tr>
   );
 }
 
@@ -402,4 +371,44 @@ function countGamesByTeamId(games: { home_team: { id: number }; visitor_team: { 
     map.set(game.visitor_team.id, (map.get(game.visitor_team.id) || 0) + 1);
   });
   return map;
+}
+
+type StatColumn = {
+  key: string;
+  label: string;
+  statId?: number;
+};
+
+function buildStatColumns(categories: YahooStatCategoryEntry[]): StatColumn[] {
+  return categories
+    .filter((entry) => {
+      const enabled = entry.stat.enabled;
+      return enabled === 1 || enabled === "1" || enabled === true;
+    })
+    .map((entry) => {
+      const stat = entry.stat;
+      const label = stat.abbr || stat.display_name || stat.name;
+      return {
+        key: `stat_${stat.stat_id}`,
+        label,
+        statId: Number(stat.stat_id),
+      };
+    });
+}
+
+function getStatValue(
+  stats: SimplifiedPlayer["stats"],
+  column: StatColumn,
+  label: string
+) {
+  if (!stats || !column.statId) return "-";
+  const value = stats[`stat_${column.statId}`];
+  if (value === undefined || value === null || value === "") return "-";
+  if (typeof value === "number") {
+    if (label.includes("%")) {
+      return value < 1 ? value.toFixed(3) : value.toFixed(1);
+    }
+    return Number.isInteger(value) ? value.toString() : value.toFixed(1);
+  }
+  return value;
 }

@@ -837,7 +837,7 @@ export interface SimplifiedPlayer {
   injuryNote?: string;
   selectedPosition?: string;
   percentOwned?: number;
-  stats?: Record<string, number>;
+  stats?: Record<string, number | string>;
 }
 
 export interface SimplifiedMatchup {

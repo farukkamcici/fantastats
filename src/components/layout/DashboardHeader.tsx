@@ -46,6 +46,7 @@ export function DashboardHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Fetch leagues for the dropdown
@@ -60,6 +61,10 @@ export function DashboardHeader() {
   });
 
   const activeLeagues = leagues?.filter(l => l.isActive) || [];
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -113,6 +118,8 @@ export function DashboardHeader() {
   ] : [];
 
   const isActiveTab = (href: string) => pathname.startsWith(href);
+  const showLeagueNav = isHydrated && currentLeague && leagueTabs.length > 0;
+  const showLeagueSelector = isHydrated && activeLeagues.length > 0;
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--bg-surface)] border-b border-[var(--border-default)] backdrop-blur-sm">
@@ -136,7 +143,7 @@ export function DashboardHeader() {
             </Link>
 
             {/* League Selector Dropdown */}
-            {activeLeagues.length > 0 && (
+            {showLeagueSelector && (
               <>
                 <div className="h-5 w-px bg-[var(--border-default)]" />
                 <div className="relative" ref={dropdownRef}>
@@ -190,7 +197,7 @@ export function DashboardHeader() {
       </nav>
 
       {/* Tab navigation row - only when inside a league */}
-      {currentLeague && leagueTabs.length > 0 && (
+      {showLeagueNav && (
         <div className="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)]">
           <div className="container mx-auto px-4 sm:px-6">
             <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide -mb-px">

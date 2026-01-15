@@ -556,7 +556,7 @@ export class YahooFantasyClient {
     playerKey: string,
     type: "week" | "season" | "date" = "season",
     options?: { week?: number; date?: string }
-  ): Promise<Record<string, number>> {
+  ): Promise<Record<string, number | string>> {
     const week = options?.week;
     const date = options?.date;
     const statType =
@@ -587,7 +587,7 @@ export class YahooFantasyClient {
     teamKey: string,
     type: "week" | "season" = "season",
     week?: number
-  ): Promise<Record<string, number>> {
+  ): Promise<Record<string, number | string>> {
     const statType = type === "week" && week ? `stats;type=week;week=${week}` : "stats;type=season";
     const endpoint = `/team/${teamKey}/${statType}`;
 
@@ -1623,7 +1623,7 @@ export class YahooFantasyClient {
     };
   }
 
-  private parsePlayerStatsResponse(response: unknown): Record<string, number> {
+  private parsePlayerStatsResponse(response: unknown): Record<string, number | string> {
     try {
       const fantasyContent = (response as Record<string, unknown>)?.fantasy_content as
         | Record<string, unknown>
@@ -1634,7 +1634,7 @@ export class YahooFantasyClient {
       const stats =
         ((player[1] as Record<string, unknown>)?.player_stats as Record<string, unknown>)
           ?.stats || [];
-      const result: Record<string, number> = {};
+      const result: Record<string, number | string> = {};
 
       for (const stat of stats as unknown[]) {
         if (typeof stat !== "object" || !stat) continue;
@@ -1644,7 +1644,13 @@ export class YahooFantasyClient {
         const statId = statEntry.stat_id as number | undefined;
         const value = statEntry.value as string | undefined;
         if (statId !== undefined && value !== undefined) {
-          result[`stat_${statId}`] = parseFloat(value) || 0;
+          const key = `stat_${statId}`;
+          if (typeof value === "string" && value.includes("/")) {
+            result[key] = value;
+          } else {
+            const numeric = parseFloat(value);
+            result[key] = Number.isNaN(numeric) ? value : numeric;
+          }
         }
       }
 
@@ -1655,7 +1661,7 @@ export class YahooFantasyClient {
     }
   }
 
-  private parseTeamStatsResponse(response: unknown): Record<string, number> {
+  private parseTeamStatsResponse(response: unknown): Record<string, number | string> {
     try {
       const fantasyContent = (response as Record<string, unknown>)?.fantasy_content as
         | Record<string, unknown>
@@ -1666,7 +1672,7 @@ export class YahooFantasyClient {
       const stats =
         ((team[1] as Record<string, unknown>)?.team_stats as Record<string, unknown>)?.stats ||
         [];
-      const result: Record<string, number> = {};
+      const result: Record<string, number | string> = {};
 
       for (const stat of stats as unknown[]) {
         if (typeof stat !== "object" || !stat) continue;
@@ -1676,7 +1682,13 @@ export class YahooFantasyClient {
         const statId = statEntry.stat_id as number | undefined;
         const value = statEntry.value as string | undefined;
         if (statId !== undefined && value !== undefined) {
-          result[`stat_${statId}`] = parseFloat(value) || 0;
+          const key = `stat_${statId}`;
+          if (typeof value === "string" && value.includes("/")) {
+            result[key] = value;
+          } else {
+            const numeric = parseFloat(value);
+            result[key] = Number.isNaN(numeric) ? value : numeric;
+          }
         }
       }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { UserMenu } from "@/components/auth/UserMenu";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

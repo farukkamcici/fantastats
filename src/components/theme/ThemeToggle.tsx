@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "@/components/providers/ThemeProvider";
 
 /**
  * Theme Toggle Button - Simple 2-step toggle (light ↔ dark)

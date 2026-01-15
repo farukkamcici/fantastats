@@ -1,7 +1,7 @@
 "use client";
 
 import { UserMenu } from "@/components/auth/UserMenu";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useLeague } from "@/contexts";
 import { useQuery } from "@tanstack/react-query";
 import {

@@ -125,7 +125,7 @@ src/components/
 ### Theme Hook
 
 ```tsx
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/providers/ThemeProvider";
 
 function MyComponent() {
   const { theme, resolvedTheme, setTheme } = useTheme();
@@ -139,7 +139,7 @@ function MyComponent() {
 ### Theme Toggle
 
 ```tsx
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 <ThemeToggle /> // Cycles: light → dark → system
 ```
@@ -336,7 +336,7 @@ var(--overlay-bg)        /* Modal overlay */
 
 ```tsx
 // src/components/Providers.tsx
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

@@ -1112,6 +1112,10 @@ export class YahooFantasyClient {
               logoUrl: (teamData.team_logos as { team_logo?: { url?: string } }[])?.[0]
                 ?.team_logo?.url,
               isOwned: true, // All teams from this endpoint are owned by the user
+              managers: (teamData.managers as Array<{ manager: any }>)?.map((m) => ({
+                nickname: m.manager.nickname,
+                imageUrl: m.manager.image_url,
+              })),
             });
           }
         }
@@ -1696,14 +1700,21 @@ export class YahooFantasyClient {
     }
     
     // Extract remaining games
-    const remainingGamesRaw = teamExtras?.team_remaining_games as { 
-      total?: { remaining_games?: number; live_games?: number; completed_games?: number } 
+    const remainingGamesRaw = teamExtras?.team_remaining_games as {
+      total?: { remaining_games?: number; live_games?: number; completed_games?: number }
     } | undefined;
-    
+
     const remainingGames = remainingGamesRaw?.total ? {
       remaining: remainingGamesRaw.total.remaining_games ?? 0,
       live: remainingGamesRaw.total.live_games ?? 0,
       completed: remainingGamesRaw.total.completed_games ?? 0,
+    } : undefined;
+
+    // Extract roster adds
+    const rosterAddsRaw = teamInfo.roster_adds as { value?: string; coverage_value?: string } | undefined;
+    const rosterAdds = rosterAddsRaw ? {
+      used: Number(rosterAddsRaw.value) || 0,
+      total: Number(rosterAddsRaw.coverage_value) || 0,
     } : undefined;
 
     return {
@@ -1716,6 +1727,7 @@ export class YahooFantasyClient {
         : undefined,
       stats: Object.keys(stats).length > 0 ? stats : undefined,
       remainingGames,
+      rosterAdds,
     };
   }
 

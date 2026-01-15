@@ -29,30 +29,35 @@ export function WeekSelector({
     }
   };
 
+  const isCurrent = selectedWeek === currentWeek;
+
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 bg-[var(--bg-surface)] p-1 rounded-xl border border-[var(--border-subtle)] shadow-sm">
       <button
         onClick={handlePrevious}
         disabled={selectedWeek <= 1}
-        className="p-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-1.5 rounded-lg hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous week"
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
       
-      <div className="px-4 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] min-w-[100px] text-center">
-        <span className="text-sm font-semibold text-[var(--text-primary)]">
+      <div className="px-2 min-w-[100px] flex flex-col items-center justify-center">
+        <span className="text-sm font-semibold text-[var(--text-primary)] tabular-nums">
           Week {selectedWeek}
         </span>
-        {selectedWeek === currentWeek && (
-          <span className="ml-2 text-xs text-[var(--accent)]">(Current)</span>
+        {isCurrent && (
+          <span className="text-[10px] font-medium text-[var(--accent)] flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+            Current
+          </span>
         )}
       </div>
       
       <button
         onClick={handleNext}
         disabled={selectedWeek >= effectiveMaxWeek}
-        className="p-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-1.5 rounded-lg hover:bg-[var(--bg-elevated)] text-[var(--text-secondary)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Next week"
       >
         <ChevronRight className="w-4 h-4" />

@@ -828,6 +828,7 @@ export interface SimplifiedTeam {
   losses?: number;
   ties?: number;
   leagueKey?: string; // Added for user teams endpoint
+  managers?: { nickname: string; imageUrl?: string }[];
 }
 
 export interface SimplifiedPlayer {
@@ -870,6 +871,10 @@ export interface SimplifiedMatchupTeam {
     remaining: number;
     live: number;
     completed: number;
+  };
+  rosterAdds?: {
+    used: number;
+    total: number;
   };
 }
 

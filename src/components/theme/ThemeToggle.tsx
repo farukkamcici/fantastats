@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/components/providers/ThemeProvider";
+import { useEffect, useState } from "react";
 
 /**
  * Theme Toggle Button - Simple 2-step toggle (light ↔ dark)
@@ -12,6 +13,18 @@ export function ThemeToggle() {
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="w-9 h-9 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] opacity-50" />
+    );
+  }
 
   const isDark = resolvedTheme === "dark";
 

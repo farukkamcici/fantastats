@@ -84,11 +84,75 @@ export async function GET(request: Request) {
     }
 
     if (type === "matchups") {
-      const myTeam = await client.getMyTeam(leagueKey);
+      const week = searchParams.get("week");
+      
+      const [myTeam, leagueSettings] = await Promise.all([
+        client.getMyTeam(leagueKey),
+        client.getLeagueSettings(leagueKey).catch(() => null),
+      ]);
+
       if (!myTeam) {
         return NextResponse.json({ error: "Team not found" }, { status: 404 });
       }
+
       const matchups = await client.getAllMatchups(myTeam.key);
+      
+      // If week provided, export detailed stats for that matchup
+      if (week) {
+        const weekNum = parseInt(week);
+        const matchup = matchups.find(m => m.week === weekNum);
+        
+        if (!matchup) {
+           return NextResponse.json({ error: "Matchup not found for this week" }, { status: 404 });
+        }
+
+        // Get stat category names and create ordered list
+        const statCategories = leagueSettings?.stat_categories?.stats || [];
+        const statsMap: { key: string; label: string }[] = [];
+        
+        for (const cat of statCategories) {
+          if (cat.stat?.stat_id) {
+            const label = cat.stat.display_name || cat.stat.name || cat.stat.abbr || `Stat ${cat.stat.stat_id}`;
+            statsMap.push({
+              key: `stat_${cat.stat.stat_id}`,
+              label,
+            });
+          }
+        }
+
+        const rows = statsMap.map((stat) => ({
+          Category: stat.label,
+          "My Team": (matchup.myTeam.stats?.[stat.key] as string | number) ?? "-",
+          "Opponent": (matchup.opponent.stats?.[stat.key] as string | number) ?? "-",
+        }));
+
+        // Add detailed games info
+        const myTotalGames = matchup.myTeam.remainingGames 
+          ? matchup.myTeam.remainingGames.completed + matchup.myTeam.remainingGames.live + matchup.myTeam.remainingGames.remaining 
+          : 0;
+        const oppTotalGames = matchup.opponent.remainingGames 
+          ? matchup.opponent.remainingGames.completed + matchup.opponent.remainingGames.live + matchup.opponent.remainingGames.remaining 
+          : 0;
+          
+        const maxAdds = leagueSettings?.max_weekly_adds ? Number(leagueSettings.max_weekly_adds) : 0;
+
+        const extraRows = [
+          {
+            Category: "Games Played",
+            "My Team": matchup.myTeam.remainingGames ? `${matchup.myTeam.remainingGames.completed}/${myTotalGames}` : "-",
+            "Opponent": matchup.opponent.remainingGames ? `${matchup.opponent.remainingGames.completed}/${oppTotalGames}` : "-",
+          },
+          {
+            Category: "Moves Used",
+            "My Team": matchup.myTeam.rosterAdds ? `${matchup.myTeam.rosterAdds.used}/${maxAdds || matchup.myTeam.rosterAdds.total}` : "-",
+            "Opponent": matchup.opponent.rosterAdds ? `${matchup.opponent.rosterAdds.used}/${maxAdds || matchup.opponent.rosterAdds.total}` : "-",
+          }
+        ];
+        
+        return csvResponse(toCsv([...extraRows, ...rows]), `matchup_week_${week}.csv`);
+      }
+
+      // Default: All matchups summary
       const rows = matchups.map((matchup) => ({
         week: matchup.week,
         status: matchup.status,

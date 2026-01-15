@@ -1,4 +1,3 @@
-import { ExportButton } from "@/components/export/ExportButton";
 import { SortableStandingsTable } from "@/components/standings/SortableStandingsTable";
 import { authOptions } from "@/lib/auth";
 import { createYahooClient } from "@/lib/yahoo/client";
@@ -98,10 +97,6 @@ export default async function StandingsPage({ params }: PageProps) {
             {teamsData.length} teams • Top {numPlayoffTeams} make playoffs
           </p>
         </div>
-        <ExportButton
-          href={`/api/export/csv?type=standings&leagueKey=${leagueKey}`}
-          label="Export Standings"
-        />
       </div>
 
       {/* Sortable Standings Table */}
@@ -110,6 +105,7 @@ export default async function StandingsPage({ params }: PageProps) {
         statColumns={statColumns}
         myTeamKey={myTeam?.key}
         numPlayoffTeams={numPlayoffTeams}
+        exportHref={`/api/export/csv?type=standings&leagueKey=${leagueKey}`}
       />
     </div>
   );

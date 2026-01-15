@@ -63,6 +63,23 @@
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
+
+  /* Shadcn Semantic Mappings */
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--bg-elevated);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary-foreground: var(--button-text-on-primary);
+  --color-secondary-foreground: var(--button-text-on-secondary);
+  --color-muted: var(--bg-subtle);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--bg-subtle);
+  --color-accent-foreground: var(--text-primary);
+  --color-destructive: var(--error);
+  --color-destructive-foreground: #FFFFFF;
+  --color-input: var(--border-default);
+  --color-ring: var(--focus-ring);
+  --radius: var(--radius-lg);
 }
 
 /* ==========================================================================

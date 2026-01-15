@@ -27,11 +27,13 @@ export default async function MatchupsPage({ params }: PageProps) {
   let currentMatchup = null;
   let scoreboard = null;
   let leagueSettings = null;
+  let maxWeeklyAdds: number | undefined;
   
   try {
-    [league, myTeam] = await Promise.all([
+    [league, myTeam, leagueSettings] = await Promise.all([
       client.getLeague(leagueKey).catch(() => null),
       client.getMyTeam(leagueKey).catch(() => null),
+      client.getLeagueSettings(leagueKey).catch(() => null), // Fetch league settings here
     ]);
 
     if (myTeam?.key) {
@@ -45,8 +47,9 @@ export default async function MatchupsPage({ params }: PageProps) {
       currentMatchup = matchupHistory.find((m) => m.week === currentWeek) || matchupHistory[0] || null;
     }
 
-    if (!league?.settings) {
-      leagueSettings = await client.getLeagueSettings(leagueKey).catch(() => null);
+    // Extract max_weekly_adds
+    if (leagueSettings?.max_weekly_adds) {
+      maxWeeklyAdds = Number(leagueSettings.max_weekly_adds);
     }
   } catch (error) {
     console.error("Error fetching matchup data:", error);
@@ -81,6 +84,8 @@ export default async function MatchupsPage({ params }: PageProps) {
         statColumns={statColumns}
         myTeamKey={myTeam.key}
         currentWeek={league?.current_week ?? 1}
+        exportHref={`/api/export/csv?type=matchups&leagueKey=${leagueKey}`}
+        maxWeeklyAdds={maxWeeklyAdds}
       />
 
       {/* League Scoreboard */}

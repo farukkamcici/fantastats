@@ -2,16 +2,22 @@
 
 import { UserMenu } from "@/components/auth/UserMenu";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { useLeague } from "@/contexts";
 import { useQuery } from "@tanstack/react-query";
 import {
-    ArrowRightLeft,
-    Calendar,
-    ChevronDown,
-    Swords,
-    Trophy,
-    UserPlus,
-    Users,
+  ArrowRightLeft,
+  Calendar,
+  Swords,
+  Trophy,
+  UserPlus,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -146,44 +152,29 @@ export function DashboardHeader() {
             {showLeagueSelector && (
               <>
                 <div className="h-5 w-px bg-[var(--border-default)]" />
-                <div className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm bg-[var(--bg-elevated)] border border-[var(--border-default)] hover:bg-[var(--bg-subtle)] transition-colors"
-                  >
-                    <span className="text-[var(--text-primary)] font-medium max-w-[180px] truncate">
-                      {currentLeague?.name || "Select League"}
-                    </span>
-                    <ChevronDown className={`w-4 h-4 text-[var(--text-tertiary)] transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  {dropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-64 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-lg overflow-hidden z-50">
-                      <div className="py-1">
-                        {activeLeagues.map((league) => (
-                          <button
-                            key={league.key}
-                            onClick={() => handleLeagueSelect(league)}
-                            className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-[var(--bg-elevated)] transition-colors ${
-                              currentLeague?.key === league.key ? 'bg-[var(--interactive)]/10' : ''
-                            }`}
-                          >
-                            <div className="w-6 h-6 rounded bg-[var(--interactive)]/10 flex items-center justify-center shrink-0">
-                              <Trophy className="w-3 h-3 text-[var(--interactive)]" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="text-sm font-medium text-[var(--text-primary)] truncate">{league.name}</p>
-                              <p className="text-[10px] text-[var(--text-tertiary)]">{league.numTeams} teams • Week {league.currentWeek}</p>
-                            </div>
-                            {currentLeague?.key === league.key && (
-                              <div className="w-1.5 h-1.5 rounded-full bg-[var(--interactive)]" />
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <Select
+                  value={currentLeague?.key}
+                  onValueChange={(key) => {
+                    const league = activeLeagues.find(l => l.key === key);
+                    if (league) handleLeagueSelect(league);
+                  }}
+                >
+                  <SelectTrigger className="w-auto justify-start gap-2 px-3 h-9 text-sm font-medium bg-transparent border-none hover:bg-[var(--bg-elevated)] transition-all focus:ring-0 focus:ring-offset-0 rounded-lg shadow-none [&>span]:line-clamp-1 [&>span]:flex-initial">
+                    <SelectValue placeholder="Select League" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px] border-[var(--border-subtle)] shadow-lg rounded-xl bg-[var(--bg-surface)]">
+                    {activeLeagues.map((league) => (
+                      <SelectItem key={league.key} value={league.key} className="py-2.5 cursor-pointer focus:bg-[var(--bg-subtle)]">
+                        <div className="flex flex-col text-left">
+                          <span className="font-semibold text-[var(--text-primary)]">{league.name}</span>
+                          <span className="text-[10px] text-[var(--text-tertiary)] opacity-80">
+                            {league.numTeams} teams • Week {league.currentWeek}
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </>
             )}
           </div>

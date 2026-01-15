@@ -842,23 +842,28 @@ export interface SimplifiedPlayer {
 
 export interface SimplifiedMatchup {
   week: number;
+  weekStart?: string;
+  weekEnd?: string;
   status: "upcoming" | "in_progress" | "completed";
   isPlayoffs: boolean;
-  myTeam: {
-    key?: string;
-    name: string;
-    points?: number;
-    projectedPoints?: number;
-    stats?: Record<string, number>;
-  };
-  opponent: {
-    key?: string;
-    name: string;
-    points?: number;
-    projectedPoints?: number;
-    stats?: Record<string, number>;
-  };
+  winnerTeamKey?: string;
+  myTeam: SimplifiedMatchupTeam;
+  opponent: SimplifiedMatchupTeam;
   statWinners?: Record<string, "win" | "loss" | "tie">;
+}
+
+export interface SimplifiedMatchupTeam {
+  key?: string;
+  name: string;
+  logoUrl?: string;
+  points?: number;
+  projectedPoints?: number;
+  stats?: Record<string, number | string>;
+  remainingGames?: {
+    remaining: number;
+    live: number;
+    completed: number;
+  };
 }
 
 export interface WeeklyStats {

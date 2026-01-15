@@ -7,19 +7,19 @@
 
 import { cache, CACHE_TTL, cacheKey } from "@/lib/redis";
 import {
-    SimplifiedDraftPick,
-    SimplifiedGame,
-    SimplifiedLeague,
-    SimplifiedMatchup,
-    SimplifiedPlayer,
-    SimplifiedTeam,
-    SimplifiedTransaction,
-    YahooLeague,
-    YahooLeagueSettings,
-    YahooScoreboard,
-    YahooStandings,
-    YahooTeamStanding,
-    YahooTeam
+  SimplifiedDraftPick,
+  SimplifiedGame,
+  SimplifiedLeague,
+  SimplifiedMatchup,
+  SimplifiedPlayer,
+  SimplifiedTeam,
+  SimplifiedTransaction,
+  YahooLeague,
+  YahooLeagueSettings,
+  YahooScoreboard,
+  YahooStandings,
+  YahooTeam,
+  YahooTeamStanding
 } from "./types";
 
 // =============================================================================
@@ -1586,8 +1586,33 @@ export class YahooFantasyClient {
 
         if (myTeam && opponent) {
           const status = matchupMeta?.status as string | undefined;
+          const myTeamData = this.extractTeamFromMatchup(myTeam);
+          const opponentData = this.extractTeamFromMatchup(opponent);
+          
+          // Parse stat_winners to determine wins/losses for each stat category
+          const statWinnersRaw = matchupMeta?.stat_winners as Array<{ stat_winner?: { stat_id?: string | number; winner_team_key?: string; is_tied?: boolean | number } }> | undefined;
+          const statWinners: Record<string, "win" | "loss" | "tie"> = {};
+          
+          if (statWinnersRaw && Array.isArray(statWinnersRaw)) {
+            for (const entry of statWinnersRaw) {
+              const sw = entry?.stat_winner;
+              if (sw?.stat_id !== undefined) {
+                const statId = String(sw.stat_id);
+                if (sw.is_tied) {
+                  statWinners[statId] = "tie";
+                } else if (sw.winner_team_key === myTeamKey) {
+                  statWinners[statId] = "win";
+                } else {
+                  statWinners[statId] = "loss";
+                }
+              }
+            }
+          }
+
           matchups.push({
             week: (matchupMeta?.week as number) || 0,
+            weekStart: matchupMeta?.week_start as string | undefined,
+            weekEnd: matchupMeta?.week_end as string | undefined,
             status:
               status === "postevent"
                 ? "completed"
@@ -1595,8 +1620,10 @@ export class YahooFantasyClient {
                 ? "in_progress"
                 : "upcoming",
             isPlayoffs: matchupMeta?.is_playoffs === 1,
-            myTeam: this.extractTeamFromMatchup(myTeam),
-            opponent: this.extractTeamFromMatchup(opponent),
+            winnerTeamKey: matchupMeta?.winner_team_key as string | undefined,
+            myTeam: myTeamData,
+            opponent: opponentData,
+            statWinners: Object.keys(statWinners).length > 0 ? statWinners : undefined,
           });
         }
       }
@@ -1611,21 +1638,55 @@ export class YahooFantasyClient {
   private extractTeamFromMatchup(teamData: Record<string, unknown>): SimplifiedMatchup["myTeam"] {
     const team = (teamData?.team as unknown[]) || [];
     const teamInfo = this.flattenYahooArray(team[0]);
-    const teamStats = team[1] as Record<string, unknown> | undefined;
+    const teamExtras = team[1] as Record<string, unknown> | undefined;
 
     const name = (teamInfo.name as string) || "";
     const key = teamInfo.team_key as string | undefined;
+    
+    // Extract logo URL
+    const teamLogos = teamInfo.team_logos as Array<{ team_logo?: { url?: string } }> | undefined;
+    const logoUrl = teamLogos?.[0]?.team_logo?.url;
 
-    const teamPoints = teamStats?.team_points as { total?: string } | undefined;
-    const teamProjected = teamStats?.team_projected_points as { total?: string } | undefined;
+    const teamPoints = teamExtras?.team_points as { total?: string } | undefined;
+    const teamProjected = teamExtras?.team_projected_points as { total?: string } | undefined;
+    
+    // Extract team stats
+    const teamStatsRaw = teamExtras?.team_stats as { stats?: Array<{ stat?: { stat_id?: string | number; value?: string } }> } | undefined;
+    const stats: Record<string, number | string> = {};
+    
+    if (teamStatsRaw?.stats && Array.isArray(teamStatsRaw.stats)) {
+      for (const entry of teamStatsRaw.stats) {
+        const stat = entry?.stat;
+        if (stat?.stat_id !== undefined && stat?.value !== undefined) {
+          const statId = `stat_${stat.stat_id}`;
+          // Try to parse as number, otherwise keep as string (for fractions like "201/403")
+          const numValue = parseFloat(stat.value);
+          stats[statId] = isNaN(numValue) || stat.value.includes("/") ? stat.value : numValue;
+        }
+      }
+    }
+    
+    // Extract remaining games
+    const remainingGamesRaw = teamExtras?.team_remaining_games as { 
+      total?: { remaining_games?: number; live_games?: number; completed_games?: number } 
+    } | undefined;
+    
+    const remainingGames = remainingGamesRaw?.total ? {
+      remaining: remainingGamesRaw.total.remaining_games ?? 0,
+      live: remainingGamesRaw.total.live_games ?? 0,
+      completed: remainingGamesRaw.total.completed_games ?? 0,
+    } : undefined;
 
     return {
       key,
       name,
+      logoUrl,
       points: teamPoints?.total ? parseFloat(teamPoints.total) : undefined,
       projectedPoints: teamProjected?.total
         ? parseFloat(teamProjected.total)
         : undefined,
+      stats: Object.keys(stats).length > 0 ? stats : undefined,
+      remainingGames,
     };
   }
 

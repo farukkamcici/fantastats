@@ -3,7 +3,9 @@
 This kanban board maps to `fantastats/docs/DEVELOPMENT_PLAN.md` and current issues observed in the UI.
 
 ## Backlog
-- [ ] None.
+- add small tooltip for GP column as "Games for Current Week " and change it from GP to G
+- export the whole roster rable şn the same structure to the csv with full stats and everything
+
 
 ## In Progress
 - [ ] None.

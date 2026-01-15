@@ -1,5 +1,5 @@
 import { authOptions } from "@/lib/auth";
-import { buildGamesByTeamId, getStreamingSuggestions } from "@/lib/analysis/streaming";
+import { buildGamesByTeamId, getStreamingSuggestions, type StreamingSuggestion } from "@/lib/analysis/streaming";
 import { StreamerList } from "@/components/streaming/StreamerList";
 import { NbaClient } from "@/lib/nba/client";
 import { createYahooClient } from "@/lib/yahoo/client";
@@ -31,7 +31,7 @@ export default async function FreeAgentsPage({ params, searchParams }: PageProps
   const pageCount = DEFAULT_COUNT;
 
   let players: SimplifiedPlayer[] = [];
-  let streamingSuggestions = [];
+  let streamingSuggestions: StreamingSuggestion[] = [];
   let weekRange: { startDate: string; endDate: string } | null = null;
   try {
     if (q) {

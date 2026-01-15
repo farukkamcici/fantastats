@@ -55,7 +55,7 @@ export class NbaClient {
       const games: NbaGame[] = [];
 
       do {
-        const endpoint =
+        const endpoint: string =
           "/games" +
           toQuery({
             "start_date": startDate,

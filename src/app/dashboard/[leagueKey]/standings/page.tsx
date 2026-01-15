@@ -61,7 +61,7 @@ export default async function StandingsPage({ params }: PageProps) {
         ties: outcome?.ties ?? 0,
       };
     })
-    .sort((a, b) => a.rank - b.rank);
+    .sort((a, b) => Number(a.rank) - Number(b.rank));
 
   return (
     <div className="space-y-8">
@@ -119,11 +119,12 @@ export default async function StandingsPage({ params }: PageProps) {
             <tbody className="divide-y divide-[var(--border-subtle)]">
               {sortedTeams.map((team, index) => {
                 const isMyTeam = team.key === myTeam?.key || team.isOwned;
-                const wins = team.wins ?? 0;
-                const losses = team.losses ?? 0;
-                const ties = team.ties ?? 0;
+                const wins = Number(team.wins ?? 0);
+                const losses = Number(team.losses ?? 0);
+                const ties = Number(team.ties ?? 0);
                 const totalGames = wins + losses + ties;
-                const winPct = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : "0.0";
+                const winPct =
+                  totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : "0.0";
                 
                 return (
                   <tr 

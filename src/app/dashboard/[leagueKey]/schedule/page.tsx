@@ -152,6 +152,9 @@ function formatGameTime(game: NbaGame) {
   if (game.status && game.status !== "Final" && game.status !== "Scheduled") {
     return game.status;
   }
+  if (!game.datetime) {
+    return game.status;
+  }
   const date = new Date(game.datetime);
   return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }

@@ -1,5 +1,4 @@
 import { TeamRosterSection } from "@/components/dashboard/TeamRosterSection";
-import { ExportButton } from "@/components/export/ExportButton";
 import { authOptions } from "@/lib/auth";
 import { NbaClient } from "@/lib/nba/client";
 import { createYahooClient } from "@/lib/yahoo/client";
@@ -177,22 +176,6 @@ export default async function TeamPage({ params }: PageProps) {
         </div>
       </div>
 
-      {weekRange && (
-        <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--text-tertiary)]">
-          <span>
-            Games this week: {weekRange.startDate} – {weekRange.endDate}
-          </span>
-          <ExportButton
-            href={`/api/export/csv?type=roster&leagueKey=${leagueKey}`}
-            label="Export Roster"
-          />
-          <ExportButton
-            href={`/api/export/csv?type=matchups&leagueKey=${leagueKey}`}
-            label="Export Matchups"
-          />
-        </div>
-      )}
-
       {/* Roster */}
       <div className="space-y-6">
         {!hasNbaKey && (
@@ -208,7 +191,10 @@ export default async function TeamPage({ params }: PageProps) {
           leagueKey={leagueKey}
           teamKey={myTeam.key}
           currentWeek={league?.current_week}
+          weekRange={weekRange}
         />
+        
+
       </div>
     </div>
   );

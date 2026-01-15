@@ -1196,12 +1196,30 @@ export class YahooFantasyClient {
         if (!teamData) continue;
 
         const teamInfo = this.flattenYahooArray(teamData[0]);
-        const teamExtras = (teamData[1] as Record<string, unknown>) || {};
-        const teamStandings =
-          (teamExtras.team_standings as YahooTeamStanding["team_standings"]) ||
-          (teamInfo.team_standings as YahooTeamStanding["team_standings"]);
+        const teamStats = (teamData[1] as Record<string, unknown>) || {};
+        // team_standings is in teamData[2], not teamData[1]
+        const teamStandingsData = (teamData[2] as Record<string, unknown>) || {};
+        const teamStandings = teamStandingsData.team_standings as YahooTeamStanding["team_standings"] | undefined;
 
         if (!teamInfo.team_key) continue;
+
+        // Extract managers
+        const managersRaw = teamInfo.managers as Array<{ manager?: Record<string, unknown> }> | undefined;
+        const manager = managersRaw?.[0]?.manager;
+
+        // Extract team stats
+        const teamStatsRaw = teamStats.team_stats as { stats?: Array<{ stat?: { stat_id?: string | number; value?: string } }> } | undefined;
+        const stats: Record<string, number | string> = {};
+        
+        if (teamStatsRaw?.stats && Array.isArray(teamStatsRaw.stats)) {
+          for (const entry of teamStatsRaw.stats) {
+            const stat = entry?.stat;
+            if (stat?.stat_id !== undefined && stat?.value !== undefined) {
+              const statId = `stat_${stat.stat_id}`;
+              stats[statId] = stat.value;
+            }
+          }
+        }
 
         teams.push({
           team: {
@@ -1211,11 +1229,22 @@ export class YahooFantasyClient {
             is_owned_by_current_login: teamInfo.is_owned_by_current_login === 1,
             url: (teamInfo.url as string) || "",
             team_logos: teamInfo.team_logos as YahooTeam["team_logos"],
+            waiver_priority: teamInfo.waiver_priority as number | undefined,
+            faab_balance: teamInfo.faab_balance as string | undefined,
+            number_of_moves: teamInfo.number_of_moves as number | undefined,
+            number_of_trades: teamInfo.number_of_trades as number | string | undefined,
           },
           team_standings: teamStandings || {
             rank: 999,
             outcome_totals: { wins: 0, losses: 0, ties: 0, percentage: "0" },
           },
+          team_stats: Object.keys(stats).length > 0 ? stats : undefined,
+          manager: manager ? {
+            nickname: manager.nickname as string | undefined,
+            image_url: manager.image_url as string | undefined,
+            felo_score: manager.felo_score as string | undefined,
+            felo_tier: manager.felo_tier as string | undefined,
+          } : undefined,
         });
       }
 

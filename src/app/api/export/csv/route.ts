@@ -2,8 +2,8 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 import { authOptions } from "@/lib/auth";
-import { createYahooClient } from "@/lib/yahoo/client";
 import { toCsv } from "@/lib/utils/csv";
+import { createYahooClient } from "@/lib/yahoo/client";
 
 export async function GET(request: Request) {
   try {
@@ -26,18 +26,60 @@ export async function GET(request: Request) {
     const client = createYahooClient(session.accessToken);
 
     if (type === "roster") {
-      const myTeam = await client.getMyTeam(leagueKey);
+      const [myTeam, leagueSettings] = await Promise.all([
+        client.getMyTeam(leagueKey),
+        client.getLeagueSettings(leagueKey).catch(() => null),
+      ]);
       if (!myTeam) {
         return NextResponse.json({ error: "Team not found" }, { status: 404 });
       }
-      const roster = await client.getRoster(myTeam.key);
-      const rows = roster.map((player) => ({
-        name: player.name,
-        team: player.teamAbbr,
-        position: player.position,
-        selectedPosition: player.selectedPosition || "",
-        status: player.status || "",
-      }));
+      
+      // Get roster with stats
+      let roster = await client.getRoster(myTeam.key);
+      
+      // Fetch stats for each player
+      roster = await Promise.all(
+        roster.map(async (player) => {
+          try {
+            const stats = await client.getPlayerStats(player.key, "season");
+            return { ...player, stats };
+          } catch {
+            return player;
+          }
+        })
+      );
+      
+      // Get stat category names and create ordered list
+      const statCategories = leagueSettings?.stat_categories?.stats || [];
+      const statsMap: { key: string; label: string }[] = [];
+      
+      for (const cat of statCategories) {
+        if (cat.stat?.stat_id) {
+          const label = cat.stat.display_name || cat.stat.name || cat.stat.abbr || `Stat ${cat.stat.stat_id}`;
+          statsMap.push({
+            key: `stat_${cat.stat.stat_id}`,
+            label,
+          });
+        }
+      }
+      
+      const rows = roster.map((player) => {
+        // Base columns
+        const row: Record<string, string | number> = {
+          "Player": player.name,
+          "Team": player.teamAbbr || "",
+          "Position": player.position || "",
+          "Status": player.status || "",
+        };
+        
+        // Add stats in order
+        const playerStats = player.stats as Record<string, unknown> | undefined;
+        for (const stat of statsMap) {
+          row[stat.label] = (playerStats?.[stat.key] as string | number) ?? "-";
+        }
+        
+        return row;
+      });
       return csvResponse(toCsv(rows), "roster.csv");
     }
 
@@ -75,17 +117,48 @@ export async function GET(request: Request) {
     }
 
     if (type === "standings") {
-      const standings = await client.getStandings(leagueKey);
+      const [standings, leagueSettings] = await Promise.all([
+        client.getStandings(leagueKey),
+        client.getLeagueSettings(leagueKey).catch(() => null),
+      ]);
       if (!standings) {
         return NextResponse.json({ error: "Standings not found" }, { status: 404 });
       }
-      const rows = standings.teams.map((entry) => ({
-        team: entry.team.name,
-        rank: entry.team_standings?.rank ?? "",
-        wins: entry.team_standings?.outcome_totals?.wins ?? "",
-        losses: entry.team_standings?.outcome_totals?.losses ?? "",
-        ties: entry.team_standings?.outcome_totals?.ties ?? "",
-      }));
+      
+      // Get stat category names
+      const statCategories = leagueSettings?.stat_categories?.stats || [];
+      const statIdToName: Record<string, string> = {};
+      for (const cat of statCategories) {
+        if (cat.stat?.stat_id && cat.stat?.name) {
+          statIdToName[`stat_${cat.stat.stat_id}`] = cat.stat.name;
+        }
+      }
+      
+      const rows = standings.teams.map((entry) => {
+        const row: Record<string, string | number> = {
+          rank: entry.team_standings?.rank ?? "",
+          team: entry.team.name,
+          manager: entry.manager?.nickname ?? "",
+          wins: entry.team_standings?.outcome_totals?.wins ?? "",
+          losses: entry.team_standings?.outcome_totals?.losses ?? "",
+          ties: entry.team_standings?.outcome_totals?.ties ?? "",
+          winPct: entry.team_standings?.outcome_totals?.percentage ?? "",
+          gamesBack: entry.team_standings?.games_back ?? "",
+          faabBalance: entry.team.faab_balance ?? "",
+          moves: entry.team.number_of_moves ?? "",
+          trades: entry.team.number_of_trades ?? "",
+        };
+        
+        // Add season stats
+        if (entry.team_stats) {
+          for (const [key, value] of Object.entries(entry.team_stats)) {
+            const statName = statIdToName[key] || key;
+            row[statName] = value;
+          }
+        }
+        
+        return row;
+      });
       return csvResponse(toCsv(rows), "standings.csv");
     }
 

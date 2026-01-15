@@ -218,6 +218,13 @@ export interface YahooTeamStanding {
     points_against?: YahooNumber;
     games_back?: string;
   };
+  team_stats?: Record<string, number | string>;
+  manager?: {
+    nickname?: string;
+    image_url?: string;
+    felo_score?: string;
+    felo_tier?: string;
+  };
 }
 
 // =============================================================================

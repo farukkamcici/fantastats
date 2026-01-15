@@ -3,7 +3,7 @@
 import { getBalldontlieTeamId } from "@/lib/nba/teamMapping";
 import { StatColumn } from "@/lib/yahoo/statColumns";
 import { SimplifiedPlayer } from "@/lib/yahoo/types";
-import { ChevronDown, ChevronsUpDown, ChevronUp, Shirt, User } from "lucide-react";
+import { Calendar, Check, ChevronDown, ChevronsUpDown, ChevronUp, Copy, Download, Shirt, User } from "lucide-react";
 import { useMemo, useState } from "react";
 
 type SortConfig = {
@@ -19,6 +19,8 @@ interface RosterTableProps {
   gamesByTeamId: Map<number, number>;
   onStatPeriodChange?: (period: StatPeriod) => void;
   statPeriod?: StatPeriod;
+  weekRange?: { startDate: string; endDate: string } | null;
+  exportHref?: string;
 }
 
 export function RosterTable({ 
@@ -26,9 +28,12 @@ export function RosterTable({
   statColumns, 
   gamesByTeamId,
   onStatPeriodChange,
-  statPeriod = "season"
+  statPeriod = "season",
+  weekRange,
+  exportHref
 }: RosterTableProps) {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+  const [copied, setCopied] = useState(false);
 
   const handleSort = (key: string) => {
     setSortConfig((current) => {
@@ -110,43 +115,136 @@ export function RosterTable({
 
   const allPlayers = [...sortedRegularPlayers, ...injuredPlayers];
 
+  // Copy to clipboard function - maintains table formatting
+  const handleCopyToClipboard = async () => {
+    const headers = ["Pos", "Player", "Team", "G", ...statColumns.map(c => c.label)];
+    
+    const rows = allPlayers.map(player => {
+      const teamId = player.teamAbbr ? getBalldontlieTeamId(player.teamAbbr) : undefined;
+      const gamesThisWeek = teamId ? gamesByTeamId.get(teamId) : undefined;
+      
+      const statValues = statColumns.map(column => {
+        const val = getStatValue(player.stats, column, column.label);
+        return val === "-" ? "" : val;
+      });
+      
+      return [
+        player.selectedPosition || "",
+        player.name,
+        player.teamAbbr || "",
+        gamesThisWeek?.toString() || "",
+        ...statValues
+      ];
+    });
+
+    // Create tab-separated format for Excel/Sheets
+    const tsvContent = [
+      headers.join("\t"),
+      ...rows.map(row => row.join("\t"))
+    ].join("\n");
+
+    try {
+      await navigator.clipboard.writeText(tsvContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  // Format week range with localized month names
+  const formatWeekRange = (range: { startDate: string; endDate: string } | null | undefined) => {
+    if (!range) return null;
+    const start = new Date(range.startDate);
+    const end = new Date(range.endDate);
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+    const startMonth = start.toLocaleDateString("en-US", { month: "short" });
+    const endMonth = end.toLocaleDateString("en-US", { month: "short" });
+    
+    if (startMonth === endMonth) {
+      return `${startDay} - ${endDay} ${startMonth}`;
+    }
+    return `${startDay} ${startMonth} - ${endDay} ${endMonth}`;
+  };
+
   return (
     <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-[var(--border-subtle)] flex items-center gap-3">
-        <Shirt className="w-5 h-5 text-[var(--accent)]" />
-        <h2 className="text-base font-semibold text-[var(--text-primary)]">
-          Roster
-        </h2>
-        
-        {/* Stat Period Toggle */}
-        {onStatPeriodChange && (
-          <div className="flex items-center gap-1 ml-4 bg-[var(--bg-subtle)] rounded-lg p-0.5">
-            <button
-              onClick={() => onStatPeriodChange("season")}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                statPeriod === "season"
-                  ? "bg-[var(--accent)] text-white shadow-sm"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-              }`}
-            >
-              Season
-            </button>
-            <button
-              onClick={() => onStatPeriodChange("week")}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                statPeriod === "week"
-                  ? "bg-[var(--accent)] text-white shadow-sm"
-                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-              }`}
-            >
-              Week
-            </button>
+      {/* Header Row 1: Title + Actions */}
+      <div className="px-4 py-3 border-b border-[var(--border-subtle)]">
+        <div className="flex items-center justify-between gap-4">
+          {/* Left: Title + Week Range */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Shirt className="w-5 h-5 text-[var(--accent)]" />
+              <h2 className="text-base font-semibold text-[var(--text-primary)]">Roster</h2>
+            </div>
+            
+            {weekRange && (
+              <div className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)]">
+                <Calendar className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
+                <span>{formatWeekRange(weekRange)}</span>
+              </div>
+            )}
           </div>
-        )}
-        
-        <span className="ml-auto text-sm text-[var(--text-tertiary)]">
-          {players.length} players
-        </span>
+          
+          {/* Right: Stats Toggle + Actions */}
+          <div className="flex items-center gap-3">
+            {/* Season/Week Dropdown */}
+            {onStatPeriodChange && (
+              <div className="relative">
+                <select
+                  value={statPeriod}
+                  onChange={(e) => onStatPeriodChange(e.target.value as StatPeriod)}
+                  className="appearance-none bg-[var(--bg-subtle)] border border-[var(--border-default)] rounded-lg pl-3.5 pr-10 py-2 text-sm font-medium text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)] cursor-pointer hover:bg-[var(--bg-elevated)] transition-colors min-w-[140px] min-h-[40px] shadow-sm"
+                >
+                  <option value="season">Season Stats</option>
+                  <option value="week">Week Stats</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+              </div>
+            )}
+            
+            {/* Divider */}
+            <div className="w-px h-5 bg-[var(--border-subtle)]" />
+            
+            {/* Copy Button */}
+            <button
+              onClick={handleCopyToClipboard}
+              className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              title="Copy table to clipboard"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-green-500" />
+                  <span className="text-green-500">Copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>Copy</span>
+                </>
+              )}
+            </button>
+            
+            {/* Export Button */}
+            {exportHref && (
+              <a
+                href={exportHref}
+                className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                title="Export to CSV"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Export</span>
+              </a>
+            )}
+            
+            {/* Player Count */}
+            <span className="text-xs text-[var(--text-tertiary)] tabular-nums">
+              {players.length} players
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -172,11 +270,11 @@ export function RosterTable({
                 </div>
               </th>
               <th 
-                className="w-16 px-2 py-3 text-center font-medium cursor-pointer hover:bg-[var(--bg-elevated)] transition-colors"
+                className="w-16 px-2 py-3 text-center font-medium cursor-pointer hover:bg-[var(--bg-elevated)] transition-colors group relative"
                 onClick={() => handleSort("games")}
               >
                 <div className="flex items-center justify-center gap-1">
-                  <span>GP</span>
+                  <span className="border-b border-dotted border-[var(--text-tertiary)]" title="Total games for this week">GTW</span>
                   {getSortIcon("games")}
                 </div>
               </th>
@@ -248,45 +346,60 @@ function RosterRow({
             ? "bg-[var(--error-muted)] text-[var(--error)]" 
             : "bg-[var(--bg-elevated)] text-[var(--text-secondary)]"
         }`}>
-          {player.selectedPosition || "-"}
+          {player.selectedPosition || "–"}
         </span>
       </td>
-      <td className="px-3 py-2.5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-default)] flex items-center justify-center overflow-hidden flex-shrink-0">
+      <td className="px-3 py-2.5 text-left">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-[var(--bg-elevated)] rounded-full flex items-center justify-center flex-shrink-0">
             {player.imageUrl ? (
-              <img
-                src={player.imageUrl}
-                alt={player.name}
-                className="w-full h-full object-cover"
+              // eslint-disable-next-line @next/next/no-img-element
+              <img 
+                src={player.imageUrl} 
+                alt="" 
+                className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
               <User className="w-4 h-4 text-[var(--text-tertiary)]" />
             )}
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium text-[var(--text-primary)] truncate">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-medium text-[var(--text-primary)] truncate">
                 {player.name}
-              </span>
+              </p>
               {hasStatus && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--error-muted)] text-[var(--error)] font-semibold flex-shrink-0">
+                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none ${
+                  player.status === "INJ" || player.status === "O" 
+                    ? "bg-[var(--error-muted)] text-[var(--error)]"
+                    : player.status === "GTD" || player.status === "DTD"
+                    ? "bg-yellow-500/10 text-yellow-500"
+                    : "bg-[var(--bg-elevated)] text-[var(--text-tertiary)]"
+                }`}>
                   {player.status}
                 </span>
               )}
             </div>
-            <div className="text-xs text-[var(--text-tertiary)]">
-              {player.teamAbbr} · {player.position}
-            </div>
+            <p className="text-xs text-[var(--text-tertiary)] truncate">
+              {player.teamAbbr || "—"} • {player.position || "—"}
+            </p>
           </div>
         </div>
       </td>
-      <td className="px-2 py-2.5 text-center text-[var(--text-secondary)] tabular-nums">
-        {gamesThisWeek ?? "-"}
+      <td className="px-2 py-2.5 text-center">
+        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold ${
+          gamesThisWeek !== undefined && gamesThisWeek >= 4
+            ? "bg-green-500/10 text-green-500"
+            : gamesThisWeek !== undefined && gamesThisWeek >= 3
+            ? "bg-[var(--accent)]/10 text-[var(--accent)]"
+            : "bg-[var(--bg-elevated)] text-[var(--text-tertiary)]"
+        }`}>
+          {gamesThisWeek ?? "–"}
+        </span>
       </td>
       {statColumns.map((column) => (
         <td
-          key={`${player.key}-${column.key}`}
+          key={column.key}
           className="px-2 py-2.5 text-center text-[var(--text-secondary)] tabular-nums"
         >
           {getStatValue(player.stats, column, column.label)}

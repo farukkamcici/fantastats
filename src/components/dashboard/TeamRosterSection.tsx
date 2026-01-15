@@ -12,6 +12,7 @@ interface TeamRosterSectionProps {
   leagueKey: string;
   teamKey: string;
   currentWeek?: number;
+  weekRange?: { startDate: string; endDate: string } | null;
 }
 
 export function TeamRosterSection({
@@ -21,6 +22,7 @@ export function TeamRosterSection({
   leagueKey,
   teamKey,
   currentWeek,
+  weekRange,
 }: TeamRosterSectionProps) {
   const [statPeriod, setStatPeriod] = useState<"season" | "week">("season");
   const [players, setPlayers] = useState(initialPlayers);
@@ -65,8 +67,9 @@ export function TeamRosterSection({
         gamesByTeamId={gamesByTeamId}
         statPeriod={statPeriod}
         onStatPeriodChange={handleStatPeriodChange}
+        weekRange={weekRange}
+        exportHref={`/api/export/csv?type=roster&leagueKey=${leagueKey}`}
       />
     </div>
   );
 }
-

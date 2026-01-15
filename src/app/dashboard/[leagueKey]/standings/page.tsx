@@ -1,7 +1,9 @@
 import { ExportButton } from "@/components/export/ExportButton";
+import { SortableStandingsTable } from "@/components/standings/SortableStandingsTable";
 import { authOptions } from "@/lib/auth";
 import { createYahooClient } from "@/lib/yahoo/client";
-import { AlertCircle, Medal, TrendingDown, TrendingUp, Trophy } from "lucide-react";
+import { buildStatColumns } from "@/lib/yahoo/statColumns";
+import { AlertCircle } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -21,11 +23,15 @@ export default async function StandingsPage({ params }: PageProps) {
 
   let standings = null;
   let myTeam = null;
-  
+  let leagueSettings = null;
+  let league = null;
+
   try {
-    [standings, myTeam] = await Promise.all([
+    [standings, myTeam, leagueSettings, league] = await Promise.all([
       client.getStandings(leagueKey).catch(() => null),
       client.getMyTeam(leagueKey).catch(() => null),
+      client.getLeagueSettings(leagueKey).catch(() => null),
+      client.getLeague(leagueKey).catch(() => null),
     ]);
   } catch (error) {
     console.error("Error fetching standings:", error);
@@ -47,32 +53,49 @@ export default async function StandingsPage({ params }: PageProps) {
     );
   }
 
-  const sortedTeams = [...standings.teams]
+  const statColumns = buildStatColumns(
+    leagueSettings?.stat_categories?.stats || []
+  );
+
+  // Get number of playoff teams from settings
+  const numPlayoffTeams = Number(leagueSettings?.num_playoff_teams ?? league?.settings?.num_playoff_teams ?? 6);
+
+  const teamsData = standings.teams
     .map((entry) => {
       const standingsMeta = entry.team_standings;
       const outcome = standingsMeta?.outcome_totals;
       return {
         key: entry.team.team_key,
         name: entry.team.name,
-        isOwned: entry.team.is_owned_by_current_login,
+        isOwned: Boolean(entry.team.is_owned_by_current_login),
+        logoUrl: entry.team.team_logos?.[0]?.team_logo?.url,
         rank: standingsMeta?.rank ?? 999,
+        playoffSeed: standingsMeta?.playoff_seed,
         wins: outcome?.wins ?? 0,
         losses: outcome?.losses ?? 0,
         ties: outcome?.ties ?? 0,
+        percentage: outcome?.percentage ?? "0",
+        gamesBack: standingsMeta?.games_back,
+        waiverPriority: entry.team.waiver_priority as number | undefined,
+        faabBalance: entry.team.faab_balance,
+        numberOfMoves: entry.team.number_of_moves as number | undefined,
+        numberOfTrades: entry.team.number_of_trades,
+        teamStats: entry.team_stats,
+        manager: entry.manager,
       };
     })
     .sort((a, b) => Number(a.rank) - Number(b.rank));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
             League Standings
           </h1>
-          <p className="text-sm text-[var(--text-secondary)] mt-2">
-            {sortedTeams.length} teams competing
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
+            {teamsData.length} teams • Top {numPlayoffTeams} make playoffs
           </p>
         </div>
         <ExportButton
@@ -81,113 +104,13 @@ export default async function StandingsPage({ params }: PageProps) {
         />
       </div>
 
-      {/* Standings Table */}
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-[var(--border-subtle)]">
-          <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-[var(--accent-primary)]" />
-            <h2 className="text-lg font-semibold text-[var(--text-primary)]">
-              Current Standings
-            </h2>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-elevated)]">
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  Rank
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  Team
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  W
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  L
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  T
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider">
-                  Win %
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--border-subtle)]">
-              {sortedTeams.map((team, index) => {
-                const isMyTeam = team.key === myTeam?.key || team.isOwned;
-                const wins = Number(team.wins ?? 0);
-                const losses = Number(team.losses ?? 0);
-                const ties = Number(team.ties ?? 0);
-                const totalGames = wins + losses + ties;
-                const winPct =
-                  totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : "0.0";
-                
-                return (
-                  <tr 
-                    key={team.key}
-                    className={`
-                      ${isMyTeam ? "bg-[var(--accent-primary)]/5" : "hover:bg-[var(--bg-subtle)]"}
-                      transition-colors
-                    `}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        {index < 3 ? (
-                          <Medal className={`w-5 h-5 ${
-                            index === 0 ? "text-yellow-500" : 
-                            index === 1 ? "text-gray-400" : 
-                            "text-amber-600"
-                          }`} />
-                        ) : (
-                          <span className="w-5 text-center text-sm text-[var(--text-tertiary)]">
-                            {team.rank !== 999 ? team.rank : index + 1}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <span className={`font-medium ${isMyTeam ? "text-[var(--accent-primary)]" : "text-[var(--text-primary)]"}`}>
-                          {team.name}
-                        </span>
-                        {isMyTeam && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-medium">
-                            You
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-500 font-medium flex items-center justify-center gap-1">
-                        <TrendingUp className="w-3 h-3" />
-                        {wins}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-red-500 font-medium flex items-center justify-center gap-1">
-                        <TrendingDown className="w-3 h-3" />
-                        {losses}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center text-[var(--text-secondary)]">
-                      {ties}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-[var(--text-primary)] font-medium">
-                        {winPct}%
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Sortable Standings Table */}
+      <SortableStandingsTable
+        teams={teamsData}
+        statColumns={statColumns}
+        myTeamKey={myTeam?.key}
+        numPlayoffTeams={numPlayoffTeams}
+      />
     </div>
   );
 }

@@ -133,8 +133,8 @@ export class YahooFantasyClient {
 
     try {
       const response = await this.request<unknown>(endpoint, {
-        cacheKeyOverride: cacheKey.leagueSettings(leagueKey),
-        cacheTtl: CACHE_TTL.SETTINGS,
+        cacheKeyOverride: cacheKey.league(leagueKey),
+        cacheTtl: CACHE_TTL.MATCHUP,
       });
 
       return this.parseLeagueResponse(response);
@@ -152,7 +152,7 @@ export class YahooFantasyClient {
 
     try {
       const response = await this.request<unknown>(endpoint, {
-        cacheKeyOverride: cacheKey.league(leagueKey),
+        cacheKeyOverride: cacheKey.leagueMeta(leagueKey),
         cacheTtl: CACHE_TTL.SETTINGS,
       });
 
@@ -253,7 +253,7 @@ export class YahooFantasyClient {
 
     try {
       const response = await this.request<unknown>(endpoint, {
-        cacheKeyOverride: cacheKey.roster(teamKey),
+        cacheKeyOverride: cacheKey.teamRoster(teamKey),
         cacheTtl: CACHE_TTL.ROSTER,
       });
 
@@ -1469,6 +1469,12 @@ export class YahooFantasyClient {
             else if (itemObj.percent_owned) playerData.percent_owned = itemObj.percent_owned;
             else Object.assign(playerData, itemObj);
           }
+        }
+
+        // Check playerInfo[1] for selected_position (Yahoo API returns it as a separate array element)
+        const playerExtras = playerInfo[1] as Record<string, unknown> | undefined;
+        if (playerExtras?.selected_position && !playerData.selected_position) {
+          playerData.selected_position = playerExtras.selected_position;
         }
 
         if (playerData.player_key) {

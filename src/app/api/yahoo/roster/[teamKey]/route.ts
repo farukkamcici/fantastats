@@ -10,9 +10,10 @@ interface RouteParams {
 /**
  * GET /api/yahoo/roster/[teamKey]
  * 
- * Returns the roster (players) for a specific team
+ * Returns the roster (players) for a specific team with stats
  * Query params:
  *   - week: Optional week number for historical roster
+ *   - statType: "season" | "week" - defaults to "season"
  * 
  * teamKey format: {game_key}.l.{league_id}.t.{team_id}
  * Example: 454.l.12345.t.1
@@ -22,6 +23,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     const { teamKey } = await params;
     const { searchParams } = new URL(request.url);
     const week = searchParams.get("week");
+    const statType = (searchParams.get("statType") || "season") as "season" | "week";
 
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -44,13 +46,30 @@ export async function GET(request: Request, { params }: RouteParams) {
     // Create Yahoo client and fetch roster
     const client = createYahooClient(session.accessToken);
     const weekNum = week ? parseInt(week, 10) : undefined;
-    const roster = await client.getRoster(teamKey, weekNum);
+    let roster = await client.getRoster(teamKey, weekNum);
+
+    // Fetch stats for each player
+    if (roster.length > 0) {
+      roster = await Promise.all(
+        roster.map(async (player) => {
+          try {
+            const stats = await client.getPlayerStats(player.key, statType, {
+              week: statType === "week" ? weekNum : undefined,
+            });
+            return { ...player, stats };
+          } catch {
+            return player;
+          }
+        })
+      );
+    }
 
     return NextResponse.json({
       success: true,
       teamKey,
       week: weekNum || "current",
-      roster,
+      statType,
+      players: roster,
       count: roster.length,
     });
   } catch (error) {

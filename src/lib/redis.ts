@@ -104,6 +104,7 @@ export const cache = {
   async invalidateForTeam(teamKey: string): Promise<void> {
     const patterns = [
       `yahoo:roster:${teamKey}*`,
+      `yahoo:team:${teamKey}*`,
       `yahoo:team:*:${teamKey.split(".t.")[0]}*`,
       `yahoo:matchup:${teamKey}*`,
     ];
@@ -121,6 +122,7 @@ export const cache = {
       `league:${leagueKey}:freeagents*`,
       `yahoo:standings:${leagueKey}`,
       `yahoo:teams:${leagueKey}`,
+      `yahoo:league:${leagueKey}*`,
     ];
     for (const pattern of patterns) {
       await cache.clearPattern(pattern);
@@ -164,6 +166,7 @@ export const cacheKey = {
 
   // League
   league: (leagueKey: string) => `yahoo:league:${leagueKey}`,
+  leagueMeta: (leagueKey: string) => `yahoo:league:${leagueKey}:meta`,
   leagueSettings: (leagueKey: string) => `yahoo:league:${leagueKey}:settings`,
   leagueStandings: (leagueKey: string) => `yahoo:standings:${leagueKey}`,
   leagueTeams: (leagueKey: string) => `yahoo:teams:${leagueKey}`,
@@ -179,7 +182,7 @@ export const cacheKey = {
   // Team
   team: (userId: string, leagueKey: string) =>
     `yahoo:team:${userId}:${leagueKey}`,
-  teamRoster: (teamKey: string) => `team:${teamKey}:roster`,
+  teamRoster: (teamKey: string) => `yahoo:team:${teamKey}:roster`,
   roster: (teamKey: string, week?: number) =>
     week ? `yahoo:roster:${teamKey}:${week}` : `yahoo:roster:${teamKey}`,
   teamStats: (teamKey: string, type: string, week?: number) =>

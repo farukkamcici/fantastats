@@ -7,19 +7,19 @@
 
 import { cache, CACHE_TTL, cacheKey } from "@/lib/redis";
 import {
-  SimplifiedDraftPick,
-  SimplifiedGame,
-  SimplifiedLeague,
-  SimplifiedMatchup,
-  SimplifiedPlayer,
-  SimplifiedTeam,
-  SimplifiedTransaction,
-  YahooLeague,
-  YahooLeagueSettings,
-  YahooScoreboard,
-  YahooStandings,
-  YahooTeam,
-  YahooTeamStanding
+    SimplifiedDraftPick,
+    SimplifiedGame,
+    SimplifiedLeague,
+    SimplifiedMatchup,
+    SimplifiedPlayer,
+    SimplifiedTeam,
+    SimplifiedTransaction,
+    YahooLeague,
+    YahooLeagueSettings,
+    YahooScoreboard,
+    YahooStandings,
+    YahooTeam,
+    YahooTeamStanding
 } from "./types";
 
 // =============================================================================
@@ -438,7 +438,7 @@ export class YahooFantasyClient {
       start?: number;
     } = {}
   ): Promise<SimplifiedPlayer[]> {
-    const { position, status = "A", sort = "OR", sortType, count = 25, start = 0 } = options;
+    const { position, status = "A", sort = "AR", sortType, count = 25, start = 0 } = options;
 
     let endpoint = `/league/${leagueKey}/players;status=${status};sort=${sort};count=${count};start=${start}`;
     if (sortType) {
@@ -447,6 +447,8 @@ export class YahooFantasyClient {
     if (position) {
       endpoint += `;position=${position}`;
     }
+    // Always request stats and ownership and ranks
+    endpoint += ";out=stats;out=ownership;out=ranks";
 
     try {
       const response = await this.request<unknown>(endpoint, {
@@ -465,7 +467,7 @@ export class YahooFantasyClient {
    * Search players by name
    */
   async searchPlayers(leagueKey: string, searchTerm: string): Promise<SimplifiedPlayer[]> {
-    const endpoint = `/league/${leagueKey}/players;search=${encodeURIComponent(searchTerm)}`;
+    const endpoint = `/league/${leagueKey}/players;search=${encodeURIComponent(searchTerm)};out=stats;out=ownership;out=ranks`;
 
     try {
       const response = await this.request<unknown>(endpoint, {
@@ -1486,6 +1488,8 @@ export class YahooFantasyClient {
           | undefined;
         if (!playerInfo) continue;
 
+
+
         const playerData: Record<string, unknown> = {};
         const playerArrayRaw = playerInfo[0] as unknown;
         const playerArray = Array.isArray(playerArrayRaw) ? playerArrayRaw : [playerArrayRaw];
@@ -1508,6 +1512,19 @@ export class YahooFantasyClient {
         const playerExtras = playerInfo[1] as Record<string, unknown> | undefined;
         if (playerExtras?.selected_position && !playerData.selected_position) {
           playerData.selected_position = playerExtras.selected_position;
+        }
+
+        // Extract ownership data to determine FA vs Waiver status
+        let ownershipType: string | undefined;
+        for (const item of playerInfo) {
+          if (typeof item === "object" && item !== null) {
+            const itemObj = item as Record<string, unknown>;
+            if (itemObj.ownership) {
+              const ownership = itemObj.ownership as { ownership_type?: string };
+              ownershipType = ownership.ownership_type;
+              break;
+            }
+          }
         }
 
         if (playerData.player_key) {
@@ -1547,6 +1564,9 @@ export class YahooFantasyClient {
               | string
               | undefined,
             percentOwned: (playerData.percent_owned as { value?: number } | undefined)?.value,
+            stats: this.extractPlayerStats(playerInfo),
+            rank: this.extractPlayerRank(playerInfo),
+            isOnWaivers: ownershipType === "waivers",
           });
         }
       }
@@ -1556,6 +1576,62 @@ export class YahooFantasyClient {
       console.error("Error parsing players response:", error);
       return [];
     }
+  }
+
+  private extractPlayerRank(playerInfo: unknown[]): number | undefined {
+    for (const item of playerInfo) {
+      if (typeof item === "object" && item !== null) {
+        const itemObj = item as Record<string, unknown>;
+        if (itemObj.player_ranks) {
+          const ranks = itemObj.player_ranks as unknown[];
+          const firstRank = ranks[0] as Record<string, unknown>;
+          if (firstRank?.player_rank) {
+             const rankData = firstRank.player_rank as Record<string, unknown>;
+             const val = rankData.rank_value;
+             if (val && val !== "-") {
+                return Number(val);
+             }
+          }
+        }
+      }
+    }
+    return undefined;
+  }
+
+  private extractPlayerStats(playerInfo: unknown[]): Record<string, number | string> | undefined {
+    for (const item of playerInfo) {
+      if (typeof item === "object" && item !== null) {
+        const itemObj = item as Record<string, unknown>;
+        if (itemObj.player_stats) {
+          // Convert raw player_stats to key-value format (stat_${id}: value)
+          const playerStats = itemObj.player_stats as Record<string, unknown>;
+          const statsArray = (playerStats.stats || []) as unknown[];
+          const result: Record<string, number | string> = {};
+          
+          for (const stat of statsArray) {
+            if (typeof stat !== "object" || !stat) continue;
+            const statObj = stat as Record<string, unknown>;
+            const statEntry = statObj.stat as Record<string, unknown> | undefined;
+            if (!statEntry) continue;
+            const statId = statEntry.stat_id;
+            const value = statEntry.value as string | undefined;
+            if (statId !== undefined && value !== undefined) {
+              const key = `stat_${statId}`;
+              // Keep "/" compound values as strings, convert others to numbers
+              if (typeof value === "string" && value.includes("/")) {
+                result[key] = value;
+              } else {
+                const numeric = parseFloat(value);
+                result[key] = Number.isNaN(numeric) ? value : numeric;
+              }
+            }
+          }
+          
+          return Object.keys(result).length > 0 ? result : undefined;
+        }
+      }
+    }
+    return undefined;
   }
 
   private parseMatchupsResponse(response: unknown, myTeamKey: string): SimplifiedMatchup[] {

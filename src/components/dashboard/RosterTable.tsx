@@ -2,6 +2,7 @@
 
 import { getBalldontlieTeamId } from "@/lib/nba/teamMapping";
 import { StatColumn } from "@/lib/yahoo/statColumns";
+import { COMPOUND_STAT_MAPPING, NBA_STAT_MAPPING } from "@/lib/yahoo/statMapping";
 import { SimplifiedPlayer } from "@/lib/yahoo/types";
 import { Calendar, Check, ChevronDown, ChevronsUpDown, ChevronUp, Copy, Download, Shirt, User } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -278,18 +279,58 @@ export function RosterTable({
                   {getSortIcon("games")}
                 </div>
               </th>
-              {statColumns.map((column) => (
-                <th 
-                  key={column.key} 
-                  className="w-16 px-2 py-3 text-center font-medium cursor-pointer hover:bg-[var(--bg-elevated)] transition-colors"
-                  onClick={() => handleSort(column.key)}
-                >
-                  <div className="flex items-center justify-center gap-0.5">
-                    <span className="truncate">{column.label}</span>
-                    {getSortIcon(column.key)}
-                  </div>
-                </th>
-              ))}
+              {statColumns.map((column) => {
+                // Check if this is a compound stat (FGM/FGA or FTM/FTA)
+                const isCompound = column.statId && column.statId > 9000000;
+                const compoundParts = column.statId ? COMPOUND_STAT_MAPPING[column.statId] : undefined;
+                
+                if (isCompound && compoundParts) {
+                  const { firstStatId, secondStatId } = compoundParts;
+                  const firstDef = NBA_STAT_MAPPING[firstStatId];
+                  const secondDef = NBA_STAT_MAPPING[secondStatId];
+                  
+                  // Render as two sortable sub-columns
+                  return (
+                    <th key={column.key} className="w-24 px-1 py-3 text-center font-medium">
+                      <div className="flex items-center justify-center gap-0">
+                        <div 
+                          className="cursor-pointer hover:text-[var(--accent)] transition-colors px-1"
+                          onClick={() => handleSort(`stat_${firstStatId}`)}
+                        >
+                          <div className="flex items-center gap-0.5">
+                            <span className="text-[11px]">{firstDef?.abbr || "?"}</span>
+                            {getSortIcon(`stat_${firstStatId}`)}
+                          </div>
+                        </div>
+                        <span className="text-[var(--text-muted)]">/</span>
+                        <div 
+                          className="cursor-pointer hover:text-[var(--accent)] transition-colors px-1"
+                          onClick={() => handleSort(`stat_${secondStatId}`)}
+                        >
+                          <div className="flex items-center gap-0.5">
+                            <span className="text-[11px]">{secondDef?.abbr || "?"}</span>
+                            {getSortIcon(`stat_${secondStatId}`)}
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  );
+                }
+                
+                // Regular stat column (fallback) or standard column
+                return (
+                  <th 
+                    key={column.key} 
+                    className="w-16 px-2 py-3 text-center font-medium cursor-pointer hover:bg-[var(--bg-elevated)] transition-colors"
+                    onClick={() => handleSort(column.key)}
+                  >
+                    <div className="flex items-center justify-center gap-0.5">
+                      <span className="truncate">{column.label}</span>
+                      {getSortIcon(column.key)}
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border-subtle)]">
@@ -432,11 +473,11 @@ function getStatValue(
   if (!stats || !column.statId) return "-";
   
   // Handle compound stat IDs (like 9004003 for FGM/FGA or 9007006 for FTM/FTA)
-  if (column.statId > 9000000) {
-    const idStr = column.statId.toString();
-    const firstStatId = parseInt(idStr.slice(1, 4), 10);
-    const secondStatId = parseInt(idStr.slice(4, 7), 10);
+  // Handle compound stat IDs (like 9004003 for FGM/FGA or 9007006 for FTM/FTA)
+  if (column.statId > 9000000 && COMPOUND_STAT_MAPPING[column.statId]) {
+    const { firstStatId, secondStatId } = COMPOUND_STAT_MAPPING[column.statId];
     
+    // Key-value format (stat_4, stat_3, etc.)
     const firstValue = stats[`stat_${firstStatId}`];
     const secondValue = stats[`stat_${secondStatId}`];
     

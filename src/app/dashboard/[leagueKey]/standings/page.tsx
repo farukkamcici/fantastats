@@ -1,7 +1,7 @@
 import { SortableStandingsTable } from "@/components/standings/SortableStandingsTable";
 import { authOptions } from "@/lib/auth";
 import { createYahooClient } from "@/lib/yahoo/client";
-import { buildStatColumns } from "@/lib/yahoo/statColumns";
+import { buildStatColumns, injectCompoundStats } from "@/lib/yahoo/statColumns";
 import { AlertCircle } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -52,9 +52,9 @@ export default async function StandingsPage({ params }: PageProps) {
     );
   }
 
-  const statColumns = buildStatColumns(
+  const statColumns = injectCompoundStats(buildStatColumns(
     leagueSettings?.stat_categories?.stats || []
-  );
+  ));
 
   // Get number of playoff teams from settings
   const numPlayoffTeams = Number(leagueSettings?.num_playoff_teams ?? league?.settings?.num_playoff_teams ?? 6);

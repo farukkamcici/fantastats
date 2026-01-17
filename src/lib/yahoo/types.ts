@@ -846,6 +846,10 @@ export interface SimplifiedPlayer {
   selectedPosition?: string;
   percentOwned?: number;
   stats?: Record<string, number | string>;
+  // Phase 2 New Fields
+  rank?: number;
+  oppToday?: string; // e.g. "@ BOS" or "vs LAL", computed if game today
+  isOnWaivers?: boolean; // true if player is on waivers (not immediate FA)
 }
 
 export interface SimplifiedMatchup {

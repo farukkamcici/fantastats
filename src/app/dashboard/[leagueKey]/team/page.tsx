@@ -2,12 +2,12 @@ import { TeamRosterSection } from "@/components/dashboard/TeamRosterSection";
 import { authOptions } from "@/lib/auth";
 import { NbaClient } from "@/lib/nba/client";
 import { createYahooClient } from "@/lib/yahoo/client";
-import { buildStatColumns } from "@/lib/yahoo/statColumns";
+import { buildStatColumns, injectCompoundStats } from "@/lib/yahoo/statColumns";
 import type { SimplifiedPlayer } from "@/lib/yahoo/types";
 import {
-  AlertCircle,
-  Shirt,
-  Users,
+    AlertCircle,
+    Shirt,
+    Users,
 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -143,9 +143,9 @@ export default async function TeamPage({ params }: PageProps) {
       ]
     : roster;
   const activeCount = starters.length > 0 ? starters.length : roster.length;
-  const statColumns = buildStatColumns(
+  const statColumns = injectCompoundStats(buildStatColumns(
     (league?.settings || leagueSettings)?.stat_categories?.stats || []
-  );
+  ));
 
   return (
     <div className="space-y-8">

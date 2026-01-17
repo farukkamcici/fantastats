@@ -3,8 +3,14 @@
 This kanban board maps to `fantastats/docs/DEVELOPMENT_PLAN.md` and current issues observed in the UI.
 
 ## Backlog
-- add small tooltip for GP column as "Games for Current Week " and change it from GP to G
-- export the whole roster rable şn the same structure to the csv with full stats and everything
+-add export and copy to clippboard for FA table , give option for 50-100-200 players 
+-add better algo for streaming option for what to need for current matchup 
+-make it sortable for RGTW col and make the columns for the "remainig " game count not hte total count for the week , calculate it in roster table 
+-is it reasonable to create avg stats using GP for season stats so wecan serve Season (AVG) stats to FA table
+-make schedule tab like rows are teams, columns are weeks and values are ttoal game counts for the team in the week and highligt the current week column make it well ui 
+-add multiple sort algo in fa table for example we first sorted by rgtw and there are lots of 1 rgtw players so we sorted than 3ptm it should sort the plaers first for rtgw and 3ptm for tiebraker it shuld continue like that and it should remove the sorting spesificaly wehn ckicked to off the columns sorting 
+-create a compund sorting mechnaism that sorts for for exampkle in total of steal and block or total of fg% + ft% so this will be the logic so player can say i need better ft and better 3ptm player so lets search and find a plyer who does them both good by sorting with total 
+
 
 
 ## In Progress
